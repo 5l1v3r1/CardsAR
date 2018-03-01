@@ -23,10 +23,10 @@
             android:name=".AddGameActivity"
             android:label="@string/title_activity_add_game"
 			android:theme="@style/AppTheme.NoActionBar"></activity>
-		<activity>
+		<activity
             android:name=".SetupActivity"
             android:label="@string/title_activity_setup"
-            android:theme="@style/AppTheme.NoActionBar" />
+			android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MappingActivity"
             android:label="@string/title_activity_mapping"
