@@ -19,6 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddGameActivity"
+            android:label="@string/title_activity_add_game"
+			android:theme="@style/AppTheme.NoActionBar"></activity>
+		<activity
+            android:name=".SetupActivity"
+            android:label="@string/title_activity_setup"
+			android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".MappingActivity"
+            android:label="@string/title_activity_mapping"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
