@@ -22,6 +22,10 @@
         <activity
             android:name=".SetupActivity"
             android:label="@string/title_activity_setup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MappingActivity"
+            android:label="@string/title_activity_mapping"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
