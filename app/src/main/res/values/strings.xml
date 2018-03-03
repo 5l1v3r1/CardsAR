@@ -9,4 +9,9 @@
     <string name="title_activity_setup">SetupActivity</string>
     <string name="my_game">My Game</string>
     <string name="title_activity_mapping">MappingActivity</string>
+
+    <string name="title_activity_camera">Camera</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="take_picture">Take picture</string>
 </resources>
