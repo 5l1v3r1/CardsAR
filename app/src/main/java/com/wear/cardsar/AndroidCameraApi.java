@@ -22,7 +22,7 @@ import java.util.concurrent.locks.*;
 public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     private static final String TAG = "OCVSample::Activity";
 
-    private CameraBridgeViewBase mOpenCvCameraView;
+    private PortraitCameraView mOpenCvCameraView;
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
 
@@ -63,7 +63,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
 
         setContentView(R.layout.activity_android_camera_api);
 
-        mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.texture);
+        mOpenCvCameraView = (PortraitCameraView) findViewById(R.id.texture);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
@@ -205,43 +205,6 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         getOutputFrame(inputMat);
 
         return inputMat;
-
-        /*
-
-        System.out.println("Input at beginning: " + inputMat.toString());
-
-        setLastInputFrame(inputMat);
-
-        if (framePaused){
-            if (outputFrame == null){
-                return inputMat;
-            }else {
-                outputFrame.copyTo(inputMat);
-                return inputMat;
-            }
-        }
-
-        Mat output = new Mat();
-
-        DetectionAlgorithm.detectEdges(inputMat, output);
-
-        System.out.println("Output is frame with size " + output.size().toString());
-
-        setOutputFrame(output);
-
-        if (output.size().area() <= 0.0f){
-            System.out.println("bad output, returning input");
-
-            System.out.println("Input at end: " + inputMat.toString());
-        }else{
-            outputFrame.copyTo(inputMat);
-
-        }
-        output.release();
-
-        return inputMat;
-
-        */
     }
 
     @Override

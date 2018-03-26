@@ -68,6 +68,10 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
         super(context, attrs);
     }
 
+    public void setScale(float scale){
+        mScale = scale;
+    }
+
     protected boolean initializeCamera(int width, int height) {
         Log.d(TAG, "Initialize java camera");
         boolean result = true;
@@ -138,14 +142,9 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
             if (mCamera == null)
                 return false;
 
-            //mCamera.setDisplayOrientation(90);
-
             /* Now set camera parameters */
             try {
                 Camera.Parameters params = mCamera.getParameters();
-                params.setRotation(90);
-                mCamera.setParameters(params);
-                params = mCamera.getParameters();
                 Log.d(TAG, "getSupportedPreviewSizes() for (" + width + "x" + height + ")");
                 List<android.hardware.Camera.Size> sizes = params.getSupportedPreviewSizes();
 
@@ -183,13 +182,17 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
                     mCamera.setParameters(params);
                     params = mCamera.getParameters();
 
+                    // Intentionally swap width and height to force portrait view
                     mFrameWidth = params.getPreviewSize().height;
                     mFrameHeight = params.getPreviewSize().width;
 
-                    if ((getLayoutParams().width == LayoutParams.MATCH_PARENT) && (getLayoutParams().height == LayoutParams.MATCH_PARENT))
-                        mScale = Math.min(((float)height)/mFrameHeight, ((float)width)/mFrameWidth);
-                    else
+                    if ((getLayoutParams().width == LayoutParams.MATCH_PARENT) || (getLayoutParams().height == LayoutParams.MATCH_PARENT)) {
+                        mScale = Math.min(((float) height) / mFrameHeight, ((float) width) / mFrameWidth);
+                        Log.d(TAG, "auto-scaled");
+                    }else {
                         mScale = 0;
+                        Log.d(TAG, "No auto-scale; width=" + getLayoutParams().width + ", height=" + getLayoutParams().height);
+                    }
 
                     if (mFpsMeter != null) {
                         mFpsMeter.setResolution(mFrameWidth, mFrameHeight);
