@@ -122,17 +122,21 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
             mOpenCvCameraView.disableView();
     }
 
-    public void getLastInput(Mat dest){
+    public boolean getLastInput(Mat dest){
 
         lastInputFrameLock.lock();
         try {
-
-            lastInputFrame.copyTo(dest);
+            if (lastInputFrame == null){
+                return false;
+            }else {
+                lastInputFrame.copyTo(dest);
+            }
 
         }finally{
             lastInputFrameLock.unlock();
         }
 
+        return true;
     }
 
     private void setLastInputFrame(Mat frame){
@@ -173,6 +177,20 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
 
     }
 
+    public boolean getOutputFrame(Mat frame){
+        outputFrameLock.lock();
+        try {
+            if (outputFrame == null) return false;
+
+            outputFrame.copyTo(frame);
+
+        }finally{
+            outputFrameLock.unlock();
+        }
+
+        return true;
+    }
+
     @Override
     public Mat onCameraFrame(Mat inputMat) {
 
@@ -180,6 +198,15 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
             return null;
         }
 
+        if (!framePaused){
+            setLastInputFrame(inputMat);
+        }
+
+        getOutputFrame(inputMat);
+
+        return inputMat;
+
+        /*
 
         System.out.println("Input at beginning: " + inputMat.toString());
 
@@ -214,6 +241,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
 
         return inputMat;
 
+        */
     }
 
     @Override
