@@ -1,31 +1,37 @@
 package com.wear.cardsar;
 
 import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.imgproc.Imgproc;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.widget.Button;
 
-public class AndroidCameraApi extends AppCompatActivity implements CvCameraViewListener2 {
+import java.util.concurrent.locks.*;
+
+public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     private static final String TAG = "OCVSample::Activity";
 
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
+
+    private boolean framePaused = false;
+    private Mat lastInputFrame = null;
+    Lock lastInputFrameLock;
+    private Mat outputFrame = null;
+    Lock outputFrameLock;
+    private DetectionAlgorithm mAlgorithm;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -62,11 +68,26 @@ public class AndroidCameraApi extends AppCompatActivity implements CvCameraViewL
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
         mOpenCvCameraView.setCvCameraViewListener(this);
+
+        mAlgorithm = new DetectionAlgorithm(this);
+        mAlgorithm.start();
+
+        lastInputFrameLock = new ReentrantLock();
+        outputFrameLock = new ReentrantLock();
+
+        final Button feedToggleButton = findViewById(R.id.btn_togglelivefeed);
+        feedToggleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                framePaused = !framePaused;
+            }
+        });
+
     }
 
     @Override
     public void onPause()
     {
+        mAlgorithm.pauseAlgorithm();
         super.onPause();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
@@ -83,24 +104,116 @@ public class AndroidCameraApi extends AppCompatActivity implements CvCameraViewL
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
+
+        mAlgorithm.resumeAlgorithm();
     }
 
     public void onDestroy() {
         super.onDestroy();
+
+        mAlgorithm.kill();
+        try {
+            mAlgorithm.join();
+        }catch(InterruptedException e){
+
+        }
+
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
     }
 
+    public void getLastInput(Mat dest){
+
+        lastInputFrameLock.lock();
+        try {
+
+            lastInputFrame.copyTo(dest);
+
+        }finally{
+            lastInputFrameLock.unlock();
+        }
+
+    }
+
+    private void setLastInputFrame(Mat frame){
+
+        lastInputFrameLock.lock();
+        try {
+            if (lastInputFrame != null){
+                lastInputFrame.release();
+            }else {
+                lastInputFrame = new Mat();
+            }
+            frame.copyTo(lastInputFrame);
+
+            System.out.println("lastInputFrame now a Mat: " + lastInputFrame.toString());
+
+        }finally{
+            lastInputFrameLock.unlock();
+        }
+
+    }
+
+    public void setOutputFrame(Mat frame){
+
+        outputFrameLock.lock();
+        try {
+            if (outputFrame != null ){
+                outputFrame.release();
+            }else{
+                outputFrame = new Mat();
+            }
+
+            frame.copyTo(outputFrame);
+            System.out.println("outputFrame now a Mat: " + outputFrame.toString());
+
+        }finally{
+            outputFrameLock.unlock();
+        }
+
+    }
 
     @Override
-    public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        Mat matFrame = inputFrame.rgba();
-        Mat edges = new Mat(matFrame.size(), CvType.CV_8UC1);
+    public Mat onCameraFrame(Mat inputMat) {
 
-        Imgproc.cvtColor(matFrame, edges, Imgproc.COLOR_RGB2GRAY, 4);
-        Imgproc.Canny(edges, edges, 80, 100);
+        if (inputMat == null){
+            return null;
+        }
 
-        return edges;
+
+        System.out.println("Input at beginning: " + inputMat.toString());
+
+        setLastInputFrame(inputMat);
+
+        if (framePaused){
+            if (outputFrame == null){
+                return inputMat;
+            }else {
+                outputFrame.copyTo(inputMat);
+                return inputMat;
+            }
+        }
+
+        Mat output = new Mat();
+
+        DetectionAlgorithm.detectEdges(inputMat, output);
+
+        System.out.println("Output is frame with size " + output.size().toString());
+
+        setOutputFrame(output);
+
+        if (output.size().area() <= 0.0f){
+            System.out.println("bad output, returning input");
+
+            System.out.println("Input at end: " + inputMat.toString());
+        }else{
+            outputFrame.copyTo(inputMat);
+
+        }
+        output.release();
+
+        return inputMat;
+
     }
 
     @Override
