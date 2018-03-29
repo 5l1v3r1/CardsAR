@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Game.class, CardMapping.class}, version = 1)
+@Database(entities = {Game.class, CardMapping.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
@@ -32,8 +32,9 @@ public abstract class AppDatabase extends RoomDatabase {
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "game-database")
                             // allow queries on the main thread.
                             // Don't do this on a real app! See PersistenceBasicSample for an example.
-                            .allowMainThreadQueries()
-                            .addCallback(sAppDatabaseCallback)
+                            //.allowMainThreadQueries()
+                            //.fallbackToDestructiveMigration()
+                            //.addCallback(sAppDatabaseCallback)
                             .build();
         }
         return INSTANCE;

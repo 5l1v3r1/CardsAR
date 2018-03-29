@@ -14,7 +14,7 @@ public class Game {
 
     public Game(@NonNull String gameName) {this.gameName= gameName;}
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int gid;
 
     @NonNull

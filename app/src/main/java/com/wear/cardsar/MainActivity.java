@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity
 
     private GameViewModel mGameViewModel;
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private static final String TAG = "addGame";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
-        /*
+
         mGameViewModel.getAllGames().observe(this, new Observer<List<Game>>() {
             @Override
             public void onChanged(@Nullable final List<Game> games) {
@@ -61,14 +63,13 @@ public class MainActivity extends AppCompatActivity
                 adapter.setGames(games);
             }
         });
-        */
 
     }
 
     public void sendMessage(View view)
     {
-        Intent intent = new Intent(this, addGame.class);
-        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, addGame.class);
+        startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
     }
 
     @Override
@@ -136,8 +137,9 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Game word = new Game(data.getStringExtra(addGame.EXTRA_REPLY));
-            mGameViewModel.insert(word);
+            Game game = new Game(data.getStringExtra(addGame.EXTRA_REPLY));
+            Log.v(TAG, "Game: " + game);
+            mGameViewModel.insert(game);
         } else {
             Toast.makeText(
                     getApplicationContext(),
