@@ -203,6 +203,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         }
 
         getOutputFrame(inputMat);
+        //inputMat=cvtColor(inputMat,);
 
         return inputMat;
     }
