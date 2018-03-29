@@ -14,4 +14,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="take_picture">Pause camera</string>
+
+    <string name="hint_game">Word...</string>
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Word not saved because it is empty.</string>
 </resources>

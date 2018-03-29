@@ -1,7 +1,10 @@
 package com.wear.cardsar;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,9 +19,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private GameViewModel mGameViewModel;
+    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,19 @@ public class MainActivity extends AppCompatActivity
         final GameListAdapter adapter = new GameListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+
+        /*
+        mGameViewModel.getAllGames().observe(this, new Observer<List<Game>>() {
+            @Override
+            public void onChanged(@Nullable final List<Game> games) {
+                // Update the cached copy of the words in the adapter.
+                adapter.setGames(games);
+            }
+        });
+        */
+
     }
 
     public void sendMessage(View view)
@@ -108,4 +130,20 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Game word = new Game(data.getStringExtra(addGame.EXTRA_REPLY));
+            mGameViewModel.insert(word);
+        } else {
+            Toast.makeText(
+                    getApplicationContext(),
+                    R.string.empty_not_saved,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

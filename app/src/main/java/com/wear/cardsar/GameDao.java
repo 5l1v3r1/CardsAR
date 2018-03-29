@@ -34,4 +34,7 @@ public interface GameDao {
 
     @Delete
     void delete(Game game);
+
+    @Query("DELETE FROM game")
+    void deleteAll();
 }
