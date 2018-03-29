@@ -34,7 +34,8 @@
         <activity
             android:name=".AddGameActivity"
             android:label="@string/title_activity_add_game"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".SetupActivity"
             android:label="@string/title_activity_setup"
@@ -48,7 +49,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_camera"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".AndroidCameraApi"></activity>
+        <activity android:name=".AndroidCameraApi" />
+        <activity
+            android:name=".addGame">
+
+
+        </activity>
     </application>
 
 </manifest>

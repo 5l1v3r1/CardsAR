@@ -1,0 +1,66 @@
+Have a folder of all ranks and suits image.
+
+These are the predefined macros for his/her python code:
+	### Constants ###
+
+	# Adaptive threshold levels
+	BKG_THRESH = 60
+	CARD_THRESH = 30
+
+	# Width and height of card corner, where rank and suit are
+	CORNER_WIDTH = 32
+	CORNER_HEIGHT = 84
+
+	# Dimensions of rank train images
+	RANK_WIDTH = 70
+	RANK_HEIGHT = 125
+
+	# Dimensions of suit train images
+	SUIT_WIDTH = 70
+	SUIT_HEIGHT = 100
+
+	RANK_DIFF_MAX = 2000
+	SUIT_DIFF_MAX = 700
+
+	CARD_MAX_AREA = 120000
+	CARD_MIN_AREA = 25000
+
+	font = cv2.FONT_HERSHEY_SIMPLEX
+	### ---- INITIALIZATION ---- ###
+	# Define constants and initialize variables
+
+	## Camera settings
+	IM_WIDTH = 1280
+	IM_HEIGHT = 720 
+	FRAME_RATE = 10
+
+## Initialize calculated frame rate because it's calculated AFTER the first time it's displayed
+
+Load images of card using imread(filepath\...\imagefilename.lololol,IMREAD_GRAYSCALE) since we need grayscale for each suits
+do that a bunch of time and store it in a Mat type container.
+
+Do the same for ranks.
+
+read Mat from video feed (already did that).
+
+Preprocess the image:
+	Turn the image to grayscale (already did that i think) using cvtColor(Mat src (the original), Mat dst(what variable it will output to), int code (we will use COLOR_BGR2GRAY from improc))
+	
+	Use GaussianBlur(Mat src,Mat dst,Size(an open cv size type with variable width and height of type double, intialize by Size(w,h)) ksize,double sigmaX (Gaussian kernel standard deviation in X direction, wut?) )
+	
+	note: the person uses size of (5,5) for GaussianBlur
+	
+	Find the right w,h dimension of the image (the Mat)
+	
+	Find the bkg_level (of type double) of the Mat that GaussianBlur output to by somehow accessing the pixel int(w/100) int(h/100)
+	
+	Find a thresh_level using bkg_level + BKG_THRESH (a macro maybe in improc?)
+
+	Store the Mat in another dst using threshold(Mat src(the dst from using GaussianBlur), Mat dst, double thresh (put in thresh_level), double maxval(use 255), int type(THRESH_BINARY in idk where))
+
+Next we need to find all cards in the preprocessed Mat in the dst that threshold() output to (but this is just to find, not knowing the name of the card yet):
+	using findContours(Mat theimageindstofthreshod, java.util.List<MatOfPoint> contours (a list that it will output to), Mat hierarchy (a Mat that this will output to), int method (RETR_TREE),int mode (CHAIN_APPROX_SIMPLE))
+	
+	in the contours list me outputted, we sort their indices by contour size somehow? (the person uses index_sort = sorted(range(len(cnts)), key=lambda i : cv2.contourArea(cnts[i]),reverse=True) in python)
+
+	(to be continue...)
