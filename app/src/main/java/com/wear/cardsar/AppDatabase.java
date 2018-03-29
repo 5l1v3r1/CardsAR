@@ -30,8 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "game-database")
-                            // allow queries on the main thread.
-                            // Don't do this on a real app! See PersistenceBasicSample for an example.
+                            // We should not use main thread queries
                             //.allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()
                             //.addCallback(sAppDatabaseCallback)
@@ -40,12 +39,9 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-
-
     public static void destroyInstance() {
         INSTANCE = null;
     }
-
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
