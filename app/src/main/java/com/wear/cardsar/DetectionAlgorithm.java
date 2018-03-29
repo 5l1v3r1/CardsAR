@@ -148,7 +148,9 @@ public class DetectionAlgorithm extends Thread {
         }
 
         frame.copyTo(output);
-
+        for (int i=0;i<srtcontours.size();i++){
+            srtcontours.get(i).release();
+        }
         threshimg.release();
         blur.release();
         edges.release();

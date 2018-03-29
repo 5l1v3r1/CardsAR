@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Carlos on 3/28/2018.
- */
 
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameViewHolder> {
 
@@ -42,7 +39,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             holder.GameItemView.setText(current.getGameName());
         } else {
             // Covers the case of data not being ready yet.
-            holder.GameItemView.setText("No Word");
+            holder.GameItemView.setText("No Game");
         }
     }
 

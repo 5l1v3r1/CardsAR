@@ -22,7 +22,7 @@ public class GameViewModel extends AndroidViewModel {
         mAllGames = mRepository.getAllGames();
     }
 
-    LiveData<List<Game>> getAllWords() { return mAllGames; }
+    LiveData<List<Game>> getAllGames() { return mAllGames; }
 
     public void insert(Game game) { mRepository.insert(game); }
 }
