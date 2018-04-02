@@ -63,11 +63,9 @@ public class MainActivity extends AppCompatActivity
                 adapter.setGames(games);
             }
         });
-
     }
 
-    public void sendMessage(View view)
-    {
+    public void sendMessage(View view) {
         Intent intent = new Intent(MainActivity.this, addGame.class);
         startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
     }

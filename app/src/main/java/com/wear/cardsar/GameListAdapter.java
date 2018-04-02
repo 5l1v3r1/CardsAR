@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameViewHolder> {
 
     class GameViewHolder extends RecyclerView.ViewHolder {

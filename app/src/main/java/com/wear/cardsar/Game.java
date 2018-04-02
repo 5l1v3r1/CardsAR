@@ -21,9 +21,6 @@ public class Game {
     @ColumnInfo(name = "game_name")
     private String gameName;
 
-
-
-
     /// Getters and Setters for each entity value
     public int getGid() {
         return this.gid;
@@ -40,6 +37,5 @@ public class Game {
     public void setGameName(String gameName) {
         this.gameName = gameName;
     }
-
 
 }
