@@ -85,11 +85,24 @@ public class DetectionAlgorithm extends Thread {
         Mat blur = new Mat(frame.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(frame, edges, Imgproc.COLOR_RGB2GRAY, 4);
         //Imgproc.Canny(edges, edges, 80, 100);
+
+
+
+
+
+        edges.copyTo(output);
+
+
+
         Size s=new Size();
         s.height=5;
         s.width=5;
 
         Imgproc.GaussianBlur(edges,blur,s,0);
+
+        blur.copyTo(output);
+
+        /*
         int w=frame.width();
         int h=frame.height();
         //rotateNinety(edges, true);
@@ -147,13 +160,19 @@ public class DetectionAlgorithm extends Thread {
             }
         }
 
-        frame.copyTo(output);
+
         for (int i=0;i<srtcontours.size();i++){
             srtcontours.get(i).release();
         }
+
         threshimg.release();
+        */
         blur.release();
+
+
         edges.release();
+
+
     }
 
     public static void rotateNinety(Mat frame, boolean clockwise){
