@@ -334,6 +334,22 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
             mCamera.addCallbackBuffer(mBuffer);
     }
 
+    private static void rotateNinety(Mat frame, boolean clockwise){
+        Size originalSize = frame.size();
+
+        if (originalSize.area() == 0) return;
+
+
+        Mat transpose = frame.t();
+        if (clockwise){
+            Core.flip(transpose, frame, 1);
+        }else{
+            Core.flip(transpose, frame, 0);
+        }
+
+        transpose.release();
+    }
+
     private class PortraitCameraFrame implements CvCameraViewFrame {
         @Override
         public Mat gray() {
@@ -349,7 +365,7 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
             else
                 throw new IllegalArgumentException("Preview Format can be NV21 or YV12");
 
-            DetectionAlgorithm.rotateNinety(mRgba, true);
+            rotateNinety(mRgba, true);
             return mRgba;
         }
 
