@@ -5,8 +5,6 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.imgproc.Imgproc;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +17,7 @@ import android.widget.Button;
 
 import java.util.concurrent.locks.*;
 
-public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
+public class CameraView extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     private static final String TAG = "OCVSample::Activity";
 
     private PortraitCameraView mOpenCvCameraView;
@@ -50,7 +48,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         }
     };
 
-    public AndroidCameraApi() {
+    public CameraView() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
 
@@ -61,7 +59,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(R.layout.activity_android_camera_api);
+        setContentView(R.layout.activity_camera_view);
 
         mOpenCvCameraView = (PortraitCameraView) findViewById(R.id.texture);
 

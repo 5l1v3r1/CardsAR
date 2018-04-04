@@ -1,6 +1,5 @@
 package com.wear.cardsar;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -15,16 +14,15 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class DetectionAlgorithm extends Thread {
 
-    private AndroidCameraApi mCameraAPI;
+    private CameraView mCameraAPI;
     private boolean runAlgorithm;
     private boolean killed;
 
-    DetectionAlgorithm(AndroidCameraApi cameraAPI){
+    DetectionAlgorithm(CameraView cameraAPI){
         mCameraAPI = cameraAPI;
         killed = false;
     }

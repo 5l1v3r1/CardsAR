@@ -13,14 +13,24 @@ public class GameSetup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setup);
 
-        Button btn = (Button)findViewById(R.id.readyButton);
+        Button readyB = (Button)findViewById(R.id.readyButton);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        readyB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GameSetup.this, AndroidCameraApi.class));
+                startActivity(new Intent(GameSetup.this, CameraView.class));
             }
         });
+
+        Button cancelB = (Button)findViewById(R.id.cancelButton);
+
+        cancelB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GameSetup.this, MainActivity.class));
+            }
+        });
+
 
     }
 }

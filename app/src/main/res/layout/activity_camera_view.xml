@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.inducesmile.androidcameraapi2.AndroidCameraApi">
+    tools:context="com.wear.cardsar.CameraView">
 
     <com.wear.cardsar.PortraitCameraView
         xmlns:opencv="http://schemas.android.com/apk/res-auto"
