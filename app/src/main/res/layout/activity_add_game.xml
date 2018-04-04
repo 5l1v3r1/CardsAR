@@ -1,63 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.wear.cardsar.AddGameActivity">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/edit_game"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/hint_game"
+        android:inputType="textAutoComplete"
+        android:padding="@dimen/small_padding"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:id="@+id/addgameappbar"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:orientation="horizontal">
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" >
-
-
-                <EditText
-                    android:id="@+id/addgamename"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:text="My Game"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_weight="0"
-
-                    android:text="Save"/>
-
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <include layout="@layout/content_add_game"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/addgameappbar"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    </RelativeLayout>
-
-</android.support.design.widget.CoordinatorLayout>
-
+</android.support.constraint.ConstraintLayout>

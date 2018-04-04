@@ -1,6 +1,5 @@
 package com.wear.cardsar;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -20,7 +19,6 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 /**

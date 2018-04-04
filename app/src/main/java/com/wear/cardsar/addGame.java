@@ -20,7 +20,7 @@ public class addGame extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_game2);
+        setContentView(R.layout.activity_add_game);
         mEditGameView = findViewById(R.id.edit_game);
 
         final Button button = findViewById(R.id.button_save);
