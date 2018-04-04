@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GameViewModel mGameViewModel;
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
-    private static final String TAG = "addGame";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

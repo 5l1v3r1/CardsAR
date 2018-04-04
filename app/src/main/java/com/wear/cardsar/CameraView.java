@@ -29,7 +29,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
     Lock lastInputFrameLock;
     private Mat outputFrame = null;
     Lock outputFrameLock;
-    private DetectionAlgorithm mAlgorithm;
+    private ActiveGame mActiveGame;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -67,8 +67,8 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         mOpenCvCameraView.setCvCameraViewListener(this);
 
-        mAlgorithm = new DetectionAlgorithm(this);
-        mAlgorithm.start();
+        mActiveGame = new ActiveGame(this);
+        mActiveGame.start();
 
         lastInputFrameLock = new ReentrantLock();
         outputFrameLock = new ReentrantLock();
@@ -85,7 +85,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
     @Override
     public void onPause()
     {
-        mAlgorithm.pauseAlgorithm();
+        mActiveGame.pauseWork();
         super.onPause();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
@@ -103,15 +103,15 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
 
-        mAlgorithm.resumeAlgorithm();
+        mActiveGame.resumeWork();
     }
 
     public void onDestroy() {
         super.onDestroy();
 
-        mAlgorithm.kill();
+        mActiveGame.kill();
         try {
-            mAlgorithm.join();
+            mActiveGame.join();
         }catch(InterruptedException e){
 
         }
@@ -201,7 +201,6 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
         }
 
         getOutputFrame(inputMat);
-        //inputMat=cvtColor(inputMat,);
 
         return inputMat;
     }

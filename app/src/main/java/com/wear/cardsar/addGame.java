@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 public class addGame extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
+    public static final String EXTRA_REPLY = "com.example.android.gamelistsql.REPLY";
 
     private EditText mEditGameView;
 
