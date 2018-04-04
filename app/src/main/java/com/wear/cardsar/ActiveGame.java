@@ -10,11 +10,11 @@ public class ActiveGame extends Thread {
     private boolean runAlgorithm;
     private boolean killed;
     private DetectionAlgorithm da;
-    private AndroidCameraApi mCameraAPI;
+    private CameraView mCameraAPI;
 
     private CardMapping[] mappings;
 
-    public ActiveGame(AndroidCameraApi cameraApi){
+    public ActiveGame(CameraView cameraApi){
         super();
 
         runAlgorithm = false;
