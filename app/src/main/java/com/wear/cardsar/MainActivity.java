@@ -146,4 +146,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    protected class PlayGameListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+
+        }
+    }
+
+    protected class EditGameListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+
+        }
+    }
 }

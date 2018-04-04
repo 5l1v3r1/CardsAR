@@ -2,9 +2,11 @@ package com.wear.cardsar;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,9 +16,33 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
     class GameViewHolder extends RecyclerView.ViewHolder {
         private final TextView GameItemView;
 
-        private GameViewHolder(View itemView) {
+        private GameViewHolder(final View itemView) {
             super(itemView);
             GameItemView = itemView.findViewById(R.id.textView);
+
+            // TO-DO: Add listeners
+
+            Button playButton = itemView.findViewById(R.id.play_game_button);
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String gameName = ((TextView) itemView.findViewById(R.id.textView)).getText().toString();
+
+                    // Launch GameSetup with gameName argument
+                    Log.d("GameListAdapter", "play game: " + gameName);
+                }
+            });
+
+            Button editButton = itemView.findViewById(R.id.edit_game_button);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String gameName = ((TextView) itemView.findViewById(R.id.textView)).getText().toString();
+
+                    // Launch GameSetup with gameName as argument
+                    Log.d("GameListAdapter", "edit game: " + gameName);
+                }
+            });
         }
     }
 
