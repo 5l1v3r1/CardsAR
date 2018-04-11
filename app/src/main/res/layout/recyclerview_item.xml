@@ -1,26 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_blue_dark"
+    android:layout_marginTop="@dimen/big_padding"
+    android:layout_marginBottom="@dimen/big_padding">
 
     <TextView
         android:id="@+id/textView"
         style="@style/Game_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/edit_game_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/edit_game_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="91dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="8dp"
         android:text="@string/edit_game_btn_txt"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="89dp" />
+
+    <Button
+        android:id="@+id/delete_game_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="91dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Delete"
+        app:layout_constraintEnd_toStartOf="@+id/play_game_button"
+        app:layout_constraintStart_toEndOf="@+id/edit_game_button"
+        tools:layout_editor_absoluteY="89dp" />
 
     <Button
         android:id="@+id/play_game_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:text="@string/play_game_btn_txt"
-        />
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>
