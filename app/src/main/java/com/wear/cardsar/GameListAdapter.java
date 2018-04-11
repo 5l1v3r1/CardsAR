@@ -22,13 +22,15 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
         private GameViewHolder(final View itemView) {
             super(itemView);
             GameItemView = itemView.findViewById(R.id.textView);
-            final String gameName = GameItemView.getText().toString();
 
             Button playButton = itemView.findViewById(R.id.play_game_button);
             playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Launch GameSetup with gameName argument
+
+                    String gameName = GameItemView.getText().toString();
+
                     Log.d("GameListAdapter", "play game: " + gameName);
                     Intent intent = new Intent(itemView.getContext(), GameSetup.class);
                     intent.putExtra(GameListAdapter.MESSAGE_GAME_NAME, gameName);
@@ -41,6 +43,9 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    String gameName = GameItemView.getText().toString();
+
                     // Launch GameSetup with gameName as argument
                     Log.d("GameListAdapter", "edit game: " + gameName);
 
@@ -54,6 +59,9 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             deleteButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
+
+                    String gameName = GameItemView.getText().toString();
+
                     // TO-DO: delete item from database
                 }
             });
