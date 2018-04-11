@@ -1,6 +1,7 @@
 package com.wear.cardsar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,15 @@ import java.util.List;
 
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameViewHolder> {
 
+    public static final String MESSAGE_GAME_NAME = "com.wear.cardsar.mapping";
+
     class GameViewHolder extends RecyclerView.ViewHolder {
         private final TextView GameItemView;
 
         private GameViewHolder(final View itemView) {
             super(itemView);
             GameItemView = itemView.findViewById(R.id.textView);
+
 
             // TO-DO: Add listeners
 
@@ -28,8 +32,13 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 public void onClick(View view) {
                     String gameName = ((TextView) itemView.findViewById(R.id.textView)).getText().toString();
 
+
                     // Launch GameSetup with gameName argument
                     Log.d("GameListAdapter", "play game: " + gameName);
+                    Intent intent = new Intent(itemView.getContext(), GameSetup.class);
+                    intent.putExtra(GameListAdapter.MESSAGE_GAME_NAME, gameName);
+                    itemView.getContext().startActivity(intent);
+
                 }
             });
 
@@ -41,6 +50,10 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
 
                     // Launch GameSetup with gameName as argument
                     Log.d("GameListAdapter", "edit game: " + gameName);
+
+                    Intent intent = new Intent(itemView.getContext(), MainActivity.class);
+                    intent.putExtra(GameListAdapter.MESSAGE_GAME_NAME, gameName);
+                    itemView.getContext().startActivity(intent);
                 }
             });
         }

@@ -14,7 +14,7 @@ public class ActiveGame extends Thread {
 
     private CardMapping[] mappings;
 
-    public ActiveGame(CameraView cameraApi){
+    public ActiveGame(CameraView cameraApi, String gameName){
         super();
 
         runAlgorithm = false;
@@ -24,6 +24,8 @@ public class ActiveGame extends Thread {
         mCameraAPI = cameraApi;
 
         mappings = new CardMapping[52];
+
+        System.out.println("ActiveGame received " + gameName);
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -67,7 +68,9 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         mOpenCvCameraView.setCvCameraViewListener(this);
 
-        mActiveGame = new ActiveGame(this);
+        Intent intent = getIntent();
+
+        mActiveGame = new ActiveGame(this, intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
         mActiveGame.start();
 
         lastInputFrameLock = new ReentrantLock();
