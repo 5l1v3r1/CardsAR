@@ -22,17 +22,12 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
         private GameViewHolder(final View itemView) {
             super(itemView);
             GameItemView = itemView.findViewById(R.id.textView);
-
-
-            // TO-DO: Add listeners
+            final String gameName = GameItemView.getText().toString();
 
             Button playButton = itemView.findViewById(R.id.play_game_button);
             playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String gameName = ((TextView) itemView.findViewById(R.id.textView)).getText().toString();
-
-
                     // Launch GameSetup with gameName argument
                     Log.d("GameListAdapter", "play game: " + gameName);
                     Intent intent = new Intent(itemView.getContext(), GameSetup.class);
@@ -46,14 +41,20 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String gameName = ((TextView) itemView.findViewById(R.id.textView)).getText().toString();
-
                     // Launch GameSetup with gameName as argument
                     Log.d("GameListAdapter", "edit game: " + gameName);
 
                     Intent intent = new Intent(itemView.getContext(), MainActivity.class);
                     intent.putExtra(GameListAdapter.MESSAGE_GAME_NAME, gameName);
                     itemView.getContext().startActivity(intent);
+                }
+            });
+
+            Button deleteButton = itemView.findViewById(R.id.delete_game_button);
+            deleteButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    // TO-DO: delete item from database
                 }
             });
         }
