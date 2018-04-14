@@ -25,4 +25,6 @@ public class GameViewModel extends AndroidViewModel {
     LiveData<List<Game>> getAllGames() { return mAllGames; }
 
     public void insert(Game game) { mRepository.insert(game); }
+
+    public void delete(Game game) {mRepository.delete(game);}
 }

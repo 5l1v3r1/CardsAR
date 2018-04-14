@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable final List<Game> games) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setGames(games);
+            }
+        });
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMessage(view);
             }
         });
     }
@@ -100,4 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

@@ -63,6 +63,8 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                     String gameName = GameItemView.getText().toString();
 
                     // TO-DO: delete item from database
+                    Game tmpGame = new Game(gameName);
+
                 }
             });
         }
