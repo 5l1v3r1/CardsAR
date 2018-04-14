@@ -29,7 +29,18 @@ public class AppRepository {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
-    public void delete (Game game) { new deleteAsyncTask(mGameDao).execute(game); }
+    public void delete (Game gameName) { new deleteAsyncTask(mGameDao).execute(gameName); }
+
+    public Game findGameByName(String gameName){
+
+        for ( Game game : mAllGames.getValue()){
+            if (game.getGameName().equals(gameName)){
+                return game;
+            }
+        }
+
+        return null;
+    }
 
     private static class insertAsyncTask extends AsyncTask<Game, Void, Void> {
 
@@ -55,8 +66,26 @@ public class AppRepository {
 
         @Override
         protected Void doInBackground(final Game... params) {
+            //Game game = mAsyncTaskDao.findByName(params[0]);
             mAsyncTaskDao.delete(params[0]);
             return null;
         }
+    }
+
+    private static class findGameAsyncTask extends AsyncTask<String, Void, Game> {
+        private GameDao mAsyncTaskDao;
+
+        findGameAsyncTask(GameDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Game doInBackground(final String... params) {
+            Game game = mAsyncTaskDao.findByName(params[0]);
+            mAsyncTaskDao.delete(game);
+            return game;
+        }
+
+
     }
 }
