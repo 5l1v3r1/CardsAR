@@ -100,18 +100,4 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
-
-    protected class PlayGameListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-
-        }
-    }
-
-    protected class EditGameListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-
-        }
-    }
 }

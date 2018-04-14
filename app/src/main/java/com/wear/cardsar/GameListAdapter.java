@@ -86,7 +86,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             holder.GameItemView.setText(current.getGameName());
         } else {
             // Covers the case of data not being ready yet.
-            holder.GameItemView.setText("No Game");
+            holder.GameItemView.setText(R.string.no_game);
         }
     }
 

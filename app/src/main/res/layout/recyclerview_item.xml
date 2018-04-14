@@ -43,7 +43,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Delete"
+        android:text="@string/delete_game_btn_txt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/play_game_button"
         app:layout_constraintStart_toEndOf="@+id/edit_game_button" />

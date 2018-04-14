@@ -21,14 +21,14 @@ public class GameSetup extends AppCompatActivity {
         if (intent != null) {
             gameName = intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME);
         }else{
-            gameName = "None";
+            gameName = getString(R.string.hint_game);
         }
 
         TextView gameNameTextView = (TextView) findViewById(R.id.gameName);
         gameNameTextView.setText(gameName);
 
         TextView gameDescTextView = (TextView) findViewById(R.id.gameDesc);
-        gameDescTextView.setText("Description here");
+        gameDescTextView.setText(R.string.hint_description);
 
         Button readyB = (Button)findViewById(R.id.readyButton);
 
