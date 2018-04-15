@@ -15,6 +15,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 
     public abstract GameDao gameDao();
+    public abstract MappingsDao mappingDao();
 
     private static AppDatabase.Callback sAppDatabaseCallback =
             new AppDatabase.Callback(){

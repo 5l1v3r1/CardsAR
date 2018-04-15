@@ -13,17 +13,25 @@ import java.util.List;
 public class AppRepository {
 
     private GameDao mGameDao;
+    private MappingsDao mappingsDao;
     private LiveData<List<Game>> mAllGames;
+    private LiveData<List<CardMapping>> mGameCardMappings;
 
     AppRepository(Application application) {
         AppDatabase db = AppDatabase.getAppDatabase(application);
         mGameDao = db.gameDao();
+        mappingsDao = db.mappingDao();
         mAllGames = mGameDao.getAll();
     }
 
     LiveData<List<Game>> getAllGames() {
         return mAllGames;
     }
+
+    LiveData<List<CardMapping>> getMappings(String gameName) { return mappingsDao.findByGame(gameName);
+    }
+
+    public  void  insert (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
 
     public void insert (Game game) {
         new insertAsyncTask(mGameDao).execute(game);
@@ -46,6 +54,21 @@ public class AppRepository {
         }
     }
 
+    private static class insertMappingAsyncTask extends AsyncTask<CardMapping, Void, Void> {
+
+        private MappingsDao mAsyncTaskDao;
+
+        insertMappingAsyncTask(MappingsDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final CardMapping... params) {
+            mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
     private static class deleteAsyncTask extends AsyncTask<Game, Void, Void> {
         private GameDao mAsyncTaskDao;
 
@@ -59,4 +82,5 @@ public class AppRepository {
             return null;
         }
     }
+
 }
