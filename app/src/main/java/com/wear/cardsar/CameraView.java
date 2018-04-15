@@ -6,6 +6,7 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +23,8 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
     private static final String TAG = "OCVSample::Activity";
 
     private PortraitCameraView mOpenCvCameraView;
-    private boolean              mIsJavaCamera = true;
-    private MenuItem             mItemSwitchCamera = null;
+    private boolean mIsJavaCamera = true;
+    private MenuItem mItemSwitchCamera = null;
 
     private boolean framePaused = false;
     private Mat lastInputFrame = null;
@@ -70,7 +71,10 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         Intent intent = getIntent();
 
-        mActiveGame = new ActiveGame(this, intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
+        AppRepository repo = new AppRepository(getApplication());
+        Game game = repo.findGameByName(intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
+
+        mActiveGame = new ActiveGame(this, game);
         mActiveGame.start();
 
         lastInputFrameLock = new ReentrantLock();
