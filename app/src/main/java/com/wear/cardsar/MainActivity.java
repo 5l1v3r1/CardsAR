@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final GameListAdapter adapter = new GameListAdapter(this);
+        final GameListAdapter adapter = new GameListAdapter(this, mGameViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
 
         mGameViewModel.getAllGames().observe(this, new Observer<List<Game>>() {

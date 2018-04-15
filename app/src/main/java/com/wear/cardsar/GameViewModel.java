@@ -26,5 +26,7 @@ public class GameViewModel extends AndroidViewModel {
 
     public void insert(Game game) { mRepository.insert(game); }
 
-    public void delete(Game game) {mRepository.delete(game);}
+    public void delete(Game gameName) {mRepository.delete(gameName);}
+
+    public Game findGameByName(String gameName) {return mRepository.findGameByName(gameName);}
 }

@@ -62,8 +62,11 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
 
                     String gameName = GameItemView.getText().toString();
 
-                    // TO-DO: delete item from database
-                    Game tmpGame = new Game(gameName);
+                    Game game = mModel.findGameByName(gameName);
+
+                    if (game != null) {
+                        mModel.delete(game);
+                    }
 
                 }
             });
@@ -72,8 +75,13 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
 
     private final LayoutInflater mInflater;
     private List<Game> mGames; // Cached copy of words
+    private GameViewModel mModel;
 
-    GameListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    GameListAdapter(Context context, GameViewModel model) {
+        mInflater = LayoutInflater.from(context);
+        mModel = model;
+    }
+
 
     @Override
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
