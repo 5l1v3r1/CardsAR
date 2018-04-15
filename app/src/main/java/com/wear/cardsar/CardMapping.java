@@ -18,9 +18,12 @@ public class CardMapping {
     @ColumnInfo(name = "mapping_name")
     private String mappingName;
 
+    // num to 52 each mapping to a playing card
     @ColumnInfo(name = "card_mapping")
     private int cardMapping;
 
+    @ColumnInfo(name = "game")
+    private String game;
     ///Getters and Setters for each value
 
     public int getMid() {
@@ -46,9 +49,14 @@ public class CardMapping {
     public int getCardMapping() {
         return this.cardMapping;
     }
+
     public void setCardMapping(int cardMapping) {
         this.cardMapping = cardMapping;
     }
+
+    public String getGame() { return this.game;}
+
+    public void setGame(String gameName) { this.game = gameName;}
 
     /*
     public int getGid() {

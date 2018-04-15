@@ -49,7 +49,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                     // Launch GameSetup with gameName as argument
                     Log.d("GameListAdapter", "edit game: " + gameName);
 
-                    Intent intent = new Intent(itemView.getContext(), MainActivity.class);
+                    Intent intent = new Intent(itemView.getContext(), AddMapping.class);
                     intent.putExtra(GameListAdapter.MESSAGE_GAME_NAME, gameName);
                     itemView.getContext().startActivity(intent);
                 }

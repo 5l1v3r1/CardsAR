@@ -24,4 +24,5 @@
     <string name="edit_game_btn_txt">Edit</string>
     <string name="play_game_btn_txt">Play</string>
     <string name="delete_game_btn_txt">Delete</string>
+    <string name="title_activity_add_mapping">AddMapping</string>
 </resources>
