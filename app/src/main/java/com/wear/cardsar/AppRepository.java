@@ -3,6 +3,7 @@ package com.wear.cardsar;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 
@@ -41,13 +42,35 @@ public class AppRepository {
 
     public Game findGameByName(String gameName){
 
+        /*
+        List<Game> games = mAllGames.getValue();
+
+        if (games == null){
+            Log.e("AppRepository","No games in mAllGame");
+            return null;
+        }
+
         for ( Game game : mAllGames.getValue()){
             if (game.getGameName().equals(gameName)){
                 return game;
             }
         }
 
-        return null;
+        */
+
+
+        //AsynchReturnStruct<Game> asynchReturn = new AsynchReturnStruct<>();
+
+        findGameAsyncTask asyncTask = new findGameAsyncTask(mGameDao);
+        asyncTask.execute(gameName);
+
+        try {
+            return asyncTask.get();
+        }catch(Exception e){
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     private static class insertAsyncTask extends AsyncTask<Game, Void, Void> {
@@ -99,16 +122,28 @@ public class AppRepository {
         private GameDao mAsyncTaskDao;
 
         findGameAsyncTask(GameDao dao) {
+
             mAsyncTaskDao = dao;
         }
 
         @Override
         protected Game doInBackground(final String... params) {
             Game game = mAsyncTaskDao.findByName(params[0]);
-            mAsyncTaskDao.delete(game);
+
+            Log.d("AppRepository", "found game by name in dao");
+
             return game;
         }
 
+    }
 
+    private static class AsynchReturnStruct<T>{
+        public boolean ready;
+        public T value;
+
+        public AsynchReturnStruct(){
+            ready = false;
+            value = null;
+        }
     }
 }

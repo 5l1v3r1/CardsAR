@@ -11,10 +11,11 @@ public class ActiveGame extends Thread {
     private boolean killed;
     private DetectionAlgorithm da;
     private CameraView mCameraAPI;
+    private Game mGame;
 
     private CardMapping[] mappings;
 
-    public ActiveGame(CameraView cameraApi, String gameName){
+    public ActiveGame(CameraView cameraApi, Game game){
         super();
 
         runAlgorithm = false;
@@ -23,9 +24,11 @@ public class ActiveGame extends Thread {
         da = new DetectionAlgorithm();
         mCameraAPI = cameraApi;
 
-        mappings = new CardMapping[52];
+        mGame = game;
 
-        System.out.println("ActiveGame received " + gameName);
+        mappings = new CardMapping[52]; // TO-DO: Get mappings from mGame
+
+        System.out.println("ActiveGame received " + game.getGameName());
     }
 
     @Override
