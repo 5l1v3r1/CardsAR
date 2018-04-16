@@ -7,10 +7,6 @@ import android.util.Log;
 
 import java.util.List;
 
-/**
- * Created by Carlos on 3/28/2018.
- */
-
 public class AppRepository {
 
     private GameDao mGameDao;
@@ -38,7 +34,15 @@ public class AppRepository {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
-    public void deleteGame (Game gameName) { new deleteGameAsyncTask(mGameDao).execute(gameName); }
+    public void deleteGame (Game gameName) {
+        //Delete all mappings for a game
+        LiveData<List<CardMapping>> gameMappings = getMappings(gameName.getGameName());
+        for (CardMapping mapping : gameMappings.getValue()) {
+            deleteMapping(mapping);
+        }
+        //Delete actual game
+        new deleteGameAsyncTask(mGameDao).execute(gameName);
+    }
 
     public void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
 

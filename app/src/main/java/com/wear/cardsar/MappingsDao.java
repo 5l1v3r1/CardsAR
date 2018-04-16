@@ -26,8 +26,8 @@ public interface MappingsDao {
     @Query("SELECT * FROM mappings where game = :mid")
     CardMapping findById(int mid);
 
-    @Query("SELECT COUNT(*) from mappings where card_mapping = :gid")
-    int countMappings(int gid);
+    @Query("SELECT COUNT(*) from mappings")
+    int countMappings();
 
     @Insert
     void insertAll(CardMapping... mappings);

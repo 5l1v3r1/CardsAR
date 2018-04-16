@@ -9,10 +9,10 @@ import android.support.annotation.NonNull;
 @Entity( tableName = "mappings")
 public class CardMapping {
 
-    public CardMapping(@NonNull String mappingName, String game, int cardMapping) {
+    public CardMapping(@NonNull String mappingName, String game) {
         this.mappingName= mappingName;
         this.game = game;
-        this.cardMapping = cardMapping;
+
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -20,10 +20,6 @@ public class CardMapping {
 
     @ColumnInfo(name = "mapping_name")
     private String mappingName;
-
-    // num to 52 each mapping to a playing card
-    @ColumnInfo(name = "card_mapping")
-    private int cardMapping;
 
     @ColumnInfo(name = "game")
     private String game;
@@ -43,18 +39,6 @@ public class CardMapping {
 
     public void setMappingName( String mappingName) {
         this.mappingName = mappingName;
-    }
-
-    public int getCardName() {
-        return this.cardMapping;
-    }
-
-    public int getCardMapping() {
-        return this.cardMapping;
-    }
-
-    public void setCardMapping(int cardMapping) {
-        this.cardMapping = cardMapping;
     }
 
     public String getGame() { return this.game;}

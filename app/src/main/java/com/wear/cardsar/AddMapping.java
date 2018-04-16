@@ -63,11 +63,8 @@ public class AddMapping extends AppCompatActivity {
             Log.v(TAG, "New mapping is:");
             Log.v(TAG, data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME));
             Log.v(TAG, gameName);
-            Log.v(TAG, data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_CARD_MAPPING));
 
-            CardMapping mapping = new CardMapping(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME),
-                                                  gameName,
-                                                  Integer.parseInt(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_CARD_MAPPING)));
+            CardMapping mapping = new CardMapping(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME), gameName);
             mMappingViewModel.insert(mapping);
         } else {
             Toast.makeText(
