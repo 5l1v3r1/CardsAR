@@ -32,37 +32,34 @@ public class AppRepository {
     LiveData<List<CardMapping>> getMappings(String gameName) { return mappingsDao.findByGame(gameName);
     }
 
-    public  void  insert (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
+    public  void  insertMapping (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
 
-    public void insert (Game game) {
+    public void insertGame (Game game) {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
-    public void delete (Game gameName) { new deleteAsyncTask(mGameDao).execute(gameName); }
+    public void deleteGame (Game gameName) { new deleteGameAsyncTask(mGameDao).execute(gameName); }
+
+    public void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
 
     public Game findGameByName(String gameName){
 
-        /*
-        List<Game> games = mAllGames.getValue();
-
-        if (games == null){
-            Log.e("AppRepository","No games in mAllGame");
-            return null;
-        }
-
-        for ( Game game : mAllGames.getValue()){
-            if (game.getGameName().equals(gameName)){
-                return game;
-            }
-        }
-
-        */
-
-
-        //AsynchReturnStruct<Game> asynchReturn = new AsynchReturnStruct<>();
-
         findGameAsyncTask asyncTask = new findGameAsyncTask(mGameDao);
         asyncTask.execute(gameName);
+
+        try {
+            return asyncTask.get();
+        }catch(Exception e){
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    public CardMapping findMappingById(int id){
+
+        findMappingAsyncTask asyncTask = new findMappingAsyncTask(mappingsDao);
+        asyncTask.execute(id);
 
         try {
             return asyncTask.get();
@@ -103,15 +100,30 @@ public class AppRepository {
         }
     }
 
-    private static class deleteAsyncTask extends AsyncTask<Game, Void, Void> {
+    private static class deleteGameAsyncTask extends AsyncTask<Game, Void, Void> {
         private GameDao mAsyncTaskDao;
 
-        deleteAsyncTask(GameDao dao) {
+        deleteGameAsyncTask(GameDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
         protected Void doInBackground(final Game... params) {
+            //Game game = mAsyncTaskDao.findByName(params[0]);
+            mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+    private static class deleteMappingAsyncTask extends AsyncTask<CardMapping, Void, Void> {
+        private MappingsDao mAsyncTaskDao;
+
+        deleteMappingAsyncTask(MappingsDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final CardMapping... params) {
             //Game game = mAsyncTaskDao.findByName(params[0]);
             mAsyncTaskDao.delete(params[0]);
             return null;
@@ -137,13 +149,19 @@ public class AppRepository {
 
     }
 
-    private static class AsynchReturnStruct<T>{
-        public boolean ready;
-        public T value;
+    private static class findMappingAsyncTask extends AsyncTask<Integer, Void, CardMapping> {
+        private MappingsDao mAsyncTaskDao;
 
-        public AsynchReturnStruct(){
-            ready = false;
-            value = null;
+        findMappingAsyncTask(MappingsDao dao) {
+
+            mAsyncTaskDao = dao;
         }
+
+        @Override
+        protected CardMapping doInBackground(final Integer... params) {
+
+            return mAsyncTaskDao.findById(params[0]);
+        }
+
     }
 }
