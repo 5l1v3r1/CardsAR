@@ -64,6 +64,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                     mModel.delete(mGame);
                 }
             });
+
         }
 
         public void setGame(Game game){
