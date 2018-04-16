@@ -28,5 +28,6 @@
 
     <string name="hint_mapping_name">Mapping Name</string>
     <string name="hint_card_mapping">Card Mapping</string>
+    <string name="hint_card_quantity">Quantity</string>
 
 </resources>
