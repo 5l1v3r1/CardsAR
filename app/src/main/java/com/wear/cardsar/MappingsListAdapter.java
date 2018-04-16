@@ -18,6 +18,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         private MappingViewHolder(View itemView) {
             super(itemView);
             mappingItemView = itemView.findViewById(R.id.mappingTextView);
+
         }
     }
 
