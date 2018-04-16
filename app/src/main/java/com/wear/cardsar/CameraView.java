@@ -74,7 +74,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
         AppRepository repo = new AppRepository(getApplication());
         Game game = repo.findGameByName(intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
 
-        mActiveGame = new ActiveGame(this, game);
+        mActiveGame = new ActiveGame(this, game, repo);
         mActiveGame.start();
 
         lastInputFrameLock = new ReentrantLock();

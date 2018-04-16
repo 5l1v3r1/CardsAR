@@ -12,7 +12,6 @@ public class CardMapping {
     public CardMapping(@NonNull String mappingName, String game) {
         this.mappingName= mappingName;
         this.game = game;
-
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -23,6 +22,11 @@ public class CardMapping {
 
     @ColumnInfo(name = "game")
     private String game;
+
+    @ColumnInfo(name = "quantity")
+    private int quantity;
+
+
     ///Getters and Setters for each value
 
     public int getMid() {
@@ -44,6 +48,10 @@ public class CardMapping {
     public String getGame() { return this.game;}
 
     public void setGame(String gameName) { this.game = gameName;}
+
+    public int getQuantity() {return this.quantity;}
+
+    public void setQuantity(int quantity){ this.quantity = quantity;}
 
     /*
     public int getGid() {
