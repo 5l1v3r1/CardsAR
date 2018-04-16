@@ -3,6 +3,7 @@ package com.wear.cardsar;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import java.util.List;
 
@@ -15,16 +16,19 @@ public class MappingViewModel extends AndroidViewModel {
 
     private LiveData<List<CardMapping>> mAllMappings;
 
-    private String gameName;
-
-    public MappingViewModel (Application application, String gameName) {
+    public MappingViewModel (Application application) {
         super(application);
-        this.gameName = gameName;
         mRepository = new AppRepository(application);
-        mAllMappings = mRepository.getMappings(gameName);
+        mAllMappings = null;
     }
 
-    LiveData<List<CardMapping>> getAllMappings() { return mAllMappings; }
+    LiveData<List<CardMapping>> getAllMappings(String gameName) {
+        mAllMappings = mRepository.getMappings(gameName);
+        return mAllMappings;
+    }
 
-    public void insert(CardMapping mapping) { mRepository.insert(mapping); }
+    public void insert(CardMapping mapping) {
+        mRepository.insert(mapping);
+        Log.v("MappingViewModel", "insert mapping");
+    }
 }

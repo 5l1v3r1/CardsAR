@@ -38,10 +38,11 @@
             android:label="@string/title_activity_mapping" />
         <activity android:name=".CameraView" />
         <activity android:name=".addGame" />
-        <activity android:name=".GameSetup"/>
+        <activity android:name=".GameSetup" />
         <activity
             android:name=".AddMapping"
-            android:label="@string/title_activity_add_mapping"/>
+            android:label="@string/title_activity_add_mapping" />
+        <activity android:name=".SpecifyNewMapping"></activity>
     </application>
 
 </manifest>

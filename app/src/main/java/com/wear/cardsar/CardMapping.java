@@ -4,15 +4,18 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-
-/**
- * Created by Carlos on 3/28/2018.
- */
+import android.support.annotation.NonNull;
 
 @Entity( tableName = "mappings")
 public class CardMapping {
 
-    @PrimaryKey
+    public CardMapping(@NonNull String mappingName, String game, int cardMapping) {
+        this.mappingName= mappingName;
+        this.game = game;
+        this.cardMapping = cardMapping;
+    }
+
+    @PrimaryKey(autoGenerate = true)
     private int mid;
 
     @ColumnInfo(name = "mapping_name")
