@@ -40,12 +40,13 @@ public class AddMapping extends AppCompatActivity {
         gameName = getIntent().getStringExtra(GameListAdapter.MESSAGE_GAME_NAME);
         Log.v(TAG, "game name: " + gameName);
 
+        mMappingViewModel = ViewModelProviders.of(this).get(MappingViewModel.class);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final MappingsListAdapter adapter = new MappingsListAdapter(this);
+        final MappingsListAdapter adapter = new MappingsListAdapter(this, mMappingViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mMappingViewModel = ViewModelProviders.of(this).get(MappingViewModel.class);
+        
         mMappingViewModel.getAllMappings(gameName).observe(this, new Observer<List<CardMapping>>() {
             @Override
             public void onChanged(@Nullable final List<CardMapping> words) {

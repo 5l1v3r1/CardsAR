@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,17 +15,35 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
 
     class MappingViewHolder extends RecyclerView.ViewHolder {
         private final TextView mappingItemView;
+        private CardMapping mMapping;
 
-        private MappingViewHolder(View itemView) {
+        private MappingViewHolder(final View itemView) {
             super(itemView);
+
             mappingItemView = itemView.findViewById(R.id.mappingTextView);
+
+            Button deleteButton = itemView.findViewById(R.id.delete_button);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mModel.delete(mMapping);
+                }
+            });
+        }
+
+        public void setMapping(CardMapping mapping){
+            mMapping = mapping;
         }
     }
 
     private final LayoutInflater mInflater;
     private List<CardMapping> mMappings; // Cached copy of words
+    private MappingViewModel mModel;
 
-    MappingsListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    MappingsListAdapter(Context context, MappingViewModel model) {
+        mInflater = LayoutInflater.from(context);
+        mModel = model;
+    }
 
     @Override
     public MappingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,6 +56,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
+            holder.setMapping(current);
         } else {
             // Covers the case of data not being ready yet.
             holder.mappingItemView.setText("No Mapping");

@@ -28,7 +28,12 @@ public class MappingViewModel extends AndroidViewModel {
     }
 
     public void insert(CardMapping mapping) {
-        mRepository.insert(mapping);
-        Log.v("MappingViewModel", "insert mapping");
+        mRepository.insertMapping(mapping);
+        Log.d("MappingViewModel", "insert mapping");
+    }
+
+    public void delete(CardMapping mapping){
+        mRepository.deleteMapping(mapping);
+        Log.d("MappingViewModel", "delete mapping");
     }
 }
