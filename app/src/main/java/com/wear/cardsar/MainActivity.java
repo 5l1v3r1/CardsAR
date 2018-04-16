@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Game game = new Game(data.getStringExtra(addGame.EXTRA_REPLY));
+            Game game = new Game(data.getStringExtra(addGame.EXTRA_REPLY_NAME), data.getStringExtra(addGame.EXTRA_REPLY_DESCRIPTION));
             Log.v(TAG, "Game: " + game);
             mGameViewModel.insert(game);
         } else {

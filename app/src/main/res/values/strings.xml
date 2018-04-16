@@ -27,4 +27,6 @@
     <string name="title_activity_add_mapping">AddMapping</string>
 
     <string name="hint_mapping_name">Mapping Name</string>
+    <string name="hint_card_mapping">Card Mapping</string>
+
 </resources>

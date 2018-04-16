@@ -16,13 +16,12 @@
         android:layout_marginTop="@dimen/big_padding"
         android:textSize="18sp" />
 
-
     <EditText
         android:id="@+id/edit_card_mapping"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_mapping_name"
+        android:hint="@string/hint_card_mapping"
         android:inputType="textAutoComplete"
         android:padding="@dimen/small_padding"
         android:layout_marginBottom="@dimen/big_padding"

@@ -37,7 +37,7 @@ public class GameSetup extends AppCompatActivity {
         gameNameTextView.setText(mGame.getGameName());
 
         TextView gameDescTextView = (TextView) findViewById(R.id.gameDesc);
-        gameDescTextView.setText(mGame.getGameName()); // TO-DO: Get description from mGame
+        gameDescTextView.setText(mGame.getDescription()); // TO-DO: Get description from mGame
 
         Button readyB = (Button)findViewById(R.id.readyButton);
 

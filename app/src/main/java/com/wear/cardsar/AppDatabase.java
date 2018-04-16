@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Game.class, CardMapping.class}, version = 3)
+@Database(entities = {Game.class, CardMapping.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
@@ -55,9 +55,9 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params) {
             mDao.deleteAll();
-            Game word = new Game("Game1");
+            Game word = new Game("Game1", "description");
             mDao.insert(word);
-            word = new Game("Game2");
+            word = new Game("Game2", "description2");
             mDao.insert(word);
             return null;
         }
