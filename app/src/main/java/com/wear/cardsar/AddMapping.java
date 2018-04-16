@@ -46,7 +46,7 @@ public class AddMapping extends AppCompatActivity {
         final MappingsListAdapter adapter = new MappingsListAdapter(this, mMappingViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        
+
         mMappingViewModel.getAllMappings(gameName).observe(this, new Observer<List<CardMapping>>() {
             @Override
             public void onChanged(@Nullable final List<CardMapping> words) {

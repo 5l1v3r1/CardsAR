@@ -18,6 +18,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
 
     class GameViewHolder extends RecyclerView.ViewHolder {
         private final TextView GameItemView;
+        private Game mGame;
 
         private GameViewHolder(final View itemView) {
             super(itemView);
@@ -29,7 +30,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 public void onClick(View view) {
                     // Launch GameSetup with gameName argument
 
-                    String gameName = GameItemView.getText().toString();
+                    String gameName = mGame.getGameName();
 
                     Log.d("GameListAdapter", "play game: " + gameName);
                     Intent intent = new Intent(itemView.getContext(), GameSetup.class);
@@ -44,7 +45,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 @Override
                 public void onClick(View view) {
 
-                    String gameName = GameItemView.getText().toString();
+                    String gameName = mGame.getGameName();
 
                     // Launch GameSetup with gameName as argument
                     Log.d("GameListAdapter", "edit game: " + gameName);
@@ -60,17 +61,14 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 @Override
                 public void onClick(View view) {
 
-                    String gameName = GameItemView.getText().toString();
-
-                    Game game = mModel.findGameByName(gameName);
-
-                    if (game != null) {
-                        mModel.delete(game);
-                    }
-
+                    mModel.delete(mGame);
                 }
             });
 
+        }
+
+        public void setGame(Game game){
+            mGame = game;
         }
     }
 
@@ -95,6 +93,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
         if (mGames != null) {
             Game current = mGames.get(position);
             holder.GameItemView.setText(current.getGameName());
+            holder.setGame(current);
         } else {
             // Covers the case of data not being ready yet.
             holder.GameItemView.setText(R.string.no_game);
