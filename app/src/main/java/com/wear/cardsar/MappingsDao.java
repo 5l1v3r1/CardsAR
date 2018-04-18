@@ -37,4 +37,7 @@ public interface MappingsDao {
 
     @Delete
     void delete(CardMapping mapping);
+
+    @Query("DELETE FROM mappings where game = :gameName")
+    void deleteGameMappings(String gameName);
 }
