@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -60,6 +61,39 @@ public class GameSetup extends AppCompatActivity {
             }
         });
 
+        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
+        String removalInstructions = buildDeckInstructions(mappings);
+
+        Log.d("Removal instructions", removalInstructions);
+
+        Log.d("Total cards in deck", String.valueOf(mappings.getnPlayingCards()));
+    }
+
+    private String buildDeckInstructions(PlayingCardMappings mappings){
+
+        StringBuilder instructionBuilder = new StringBuilder();
+
+        int nDecks = (mappings.getnPlayingCards() / 52) + 1;
+
+        instructionBuilder.append("Use ");
+        instructionBuilder.append(nDecks);
+        instructionBuilder.append(" deck");
+        if (nDecks > 1){
+            instructionBuilder.append("s");
+        }
+
+        for (Pair<Integer, Integer> unusedCard : mappings.listUnusedCards()){
+            instructionBuilder.append("Remove ");
+            instructionBuilder.append(unusedCard.second);
+            instructionBuilder.append(" ");
+            instructionBuilder.append(PlayingCardMappings.getPlayingCardName(unusedCard.first));
+            if (unusedCard.second > 1) {
+                instructionBuilder.append("s");
+            }
+            instructionBuilder.append("\n");
+        }
+
+        return instructionBuilder.toString();
 
     }
 }
