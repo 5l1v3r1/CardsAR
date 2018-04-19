@@ -54,10 +54,6 @@ public class ActiveGame extends Thread {
 
 
             }
-            else {
-
-
-            }
 
         }
     }

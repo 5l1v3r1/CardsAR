@@ -76,7 +76,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         mActiveGame = new ActiveGame(this, game, repo);
         mActiveGame.start();
-        //mActiveGame.pauseWork();
+        mActiveGame.pauseWork();
 
         lastInputFrameLock = new ReentrantLock();
         outputFrameLock = new ReentrantLock();
@@ -88,10 +88,11 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
                 framePaused = !framePaused;
 
                 if (framePaused){
-                    mActiveGame.pauseWork();
+                    mActiveGame.resumeWork();
 
+                }else{
+                    mActiveGame.pauseWork();
                 }
-                else mActiveGame.resumeWork();
             }
         });
 
@@ -213,12 +214,13 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         if (!framePaused){
             setLastInputFrame(inputMat);
+            setOutputFrame(inputMat);
+            return inputMat;
+        }else{
             getOutputFrame(inputMat);
+            return inputMat;
         }
 
-        //getOutputFrame(inputMat);
-
-        return inputMat;
     }
 
     @Override
