@@ -20,8 +20,11 @@ public interface MappingsDao {
     @Query("SELECT * FROM mappings")
     LiveData<List<CardMapping>> getAll();
 
-    @Query("SELECT * FROM mappings where game = :gameName ")
+    @Query("SELECT * FROM mappings where game = :gameName")
     LiveData<List<CardMapping>> findByGame(String gameName);
+
+    @Query("SELECT * FROM mappings where game = :gameName")
+    List<CardMapping> findStaticByGame(String gameName);
 
     @Query("SELECT * FROM mappings where game = :mid")
     CardMapping findById(int mid);

@@ -22,8 +22,6 @@ public class PlayingCardMappings {
     private int nUniqueCards;
     private int lastAvailablePCard = 0;
 
-    private boolean ready = false;
-
     public static final String[] playingCardSuits = {"Clubs", "Diamonds", "Hearts", "Spades"};
     public static final String[] playingCardRanks = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "King", "Queen"};
 
@@ -35,8 +33,7 @@ public class PlayingCardMappings {
     }
 
     public PlayingCardMappings(Game game, AppRepository repository){
-        //mapToPlayingCards(game, repository);
-        initialize(game, repository);
+        mapToPlayingCards(game, repository);
     }
 
     public int getnPlayingCards(){
@@ -63,70 +60,11 @@ public class PlayingCardMappings {
         return unused;
     }
 
-    private void setReady(){
-        synchronized (this) {
-            ready = true;
-        }
-    }
 
-    /*
     private static List<CardMapping> loadMappings(Game game, AppRepository repository){
 
 
-        if (liveMappingData.getValue() != null){
-            return liveMappingData.getValue();
-        }else{
-            Log.d("PlayingCardMappings", "livedata contained null");
-            return new LinkedList<>();
-        }
-    }
-    */
-
-    private void initialize(Game game, AppRepository repository){
-
-        nPlayingCards = 0;
-        nUniqueCards = 0;
-
-        LiveData<List<CardMapping>> liveMappingData = repository.getMappings(game.getGameName());
-
-        final PlayingCardMappings receiver = this;
-
-        liveMappingData.observeForever(new Observer<List<CardMapping>>() {
-
-            @Override
-            public void onChanged(@Nullable List<CardMapping> cardMappings) {
-                if (cardMappings == null) return;
-                for (CardMapping mapping : cardMappings){
-                    nUniqueCards++;
-                    nPlayingCards += mapping.getQuantity();
-                }
-
-                int nDecks = (nPlayingCards / 52) + 1;
-
-                for (CardMapping mapping : cardMappings){
-                    int cardsToAlloc = mapping.getQuantity();
-                    while (cardsToAlloc > 0){
-                        mPlayingCards[lastAvailablePCard] = mapping;
-                        lastAvailablePCard++;
-
-                        // after mapping to a
-                        cardsToAlloc -= nDecks;
-                    }
-
-                    // Each unique card is mapped to a playing card
-                    // If there are multiple decks, and not enough of unique mapping,
-                    // extra cards from other decks must be removed
-                    if (cardsToAlloc < 0){
-                        mUnusedPlayingCards[lastAvailablePCard - 1] = cardsToAlloc * -1;
-                    }
-                }
-
-                Log.d("PlayingCardMapping", "changed and loaded list of size " + cardMappings.size());
-
-                receiver.setReady();
-            }
-
-        });
+        return repository.findStaticMappingsByName(game.getGameName());
     }
 
     private void countCards(List<CardMapping> cardMappings){
@@ -142,7 +80,7 @@ public class PlayingCardMappings {
         Log.d("nPlayingCards", String.valueOf(nPlayingCards));
     }
 
-    /*
+
     private void mapToPlayingCards(Game game, AppRepository repository){
         List<CardMapping> mappings = loadMappings(game, repository);
 
@@ -169,6 +107,6 @@ public class PlayingCardMappings {
             }
         }
     }
-    */
+
 
 }
