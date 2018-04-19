@@ -39,6 +39,7 @@ public class ActiveGame extends Thread {
     @Override
     public void run() {
         while (!killed) {
+
             if (runAlgorithm) {
                 Mat inputFrame = new Mat();
                 Mat outputFrame = new Mat();
@@ -47,11 +48,17 @@ public class ActiveGame extends Thread {
                     da.processInput(inputFrame, outputFrame);
 
                     mCameraAPI.setOutputFrame(outputFrame);
+                    inputFrame.release();
+                    outputFrame.release();
                 }
 
-                inputFrame.release();
-                outputFrame.release();
+
             }
+            else {
+
+
+            }
+
         }
     }
 

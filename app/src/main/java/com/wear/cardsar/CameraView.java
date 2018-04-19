@@ -76,6 +76,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         mActiveGame = new ActiveGame(this, game, repo);
         mActiveGame.start();
+        //mActiveGame.pauseWork();
 
         lastInputFrameLock = new ReentrantLock();
         outputFrameLock = new ReentrantLock();
@@ -83,7 +84,14 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
         final Button feedToggleButton = findViewById(R.id.btn_togglelivefeed);
         feedToggleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 framePaused = !framePaused;
+
+                if (framePaused){
+                    mActiveGame.pauseWork();
+
+                }
+                else mActiveGame.resumeWork();
             }
         });
 
@@ -205,9 +213,10 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         if (!framePaused){
             setLastInputFrame(inputMat);
+            getOutputFrame(inputMat);
         }
 
-        getOutputFrame(inputMat);
+        //getOutputFrame(inputMat);
 
         return inputMat;
     }
