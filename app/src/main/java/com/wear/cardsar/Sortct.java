@@ -23,6 +23,7 @@ public class Sortct implements Comparator<Integer>
         Integer[] indexes = new Integer[arr.size()];
         for (int i = 0; i < arr.size(); i++)
         {
+
             indexes[i] = i; // Autoboxing
         }
         return indexes;

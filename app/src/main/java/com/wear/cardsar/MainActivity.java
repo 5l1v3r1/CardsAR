@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setTitle(R.string.title_activity_main);;
+
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);

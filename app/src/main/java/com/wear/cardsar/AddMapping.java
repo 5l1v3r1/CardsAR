@@ -42,6 +42,7 @@ public class AddMapping extends AppCompatActivity {
 
         gameName = getIntent().getStringExtra(GameListAdapter.MESSAGE_GAME_NAME);
         Log.v(TAG, "game name: " + gameName);
+        getSupportActionBar().setTitle(gameName);
 
         mMappingViewModel = ViewModelProviders.of(this).get(MappingViewModel.class);
 
