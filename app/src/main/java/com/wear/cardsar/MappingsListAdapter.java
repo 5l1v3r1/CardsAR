@@ -21,22 +21,16 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
 
     class MappingViewHolder extends RecyclerView.ViewHolder {
         private final TextView mappingItemView;
-<<<<<<< HEAD
         private final ImageView mappingImage;
-=======
         private final TextView quantityView;
->>>>>>> 3c72c07c3acf773742405fb122de69af56313025
         private CardMapping mMapping;
 
         private MappingViewHolder(final View itemView) {
             super(itemView);
 
             mappingItemView = itemView.findViewById(R.id.mappingTextView);
-<<<<<<< HEAD
             mappingImage = itemView.findViewById(R.id.iv);
-=======
             quantityView = itemView.findViewById(R.id.intView);
->>>>>>> 3c72c07c3acf773742405fb122de69af56313025
 
             Button deleteButton = itemView.findViewById(R.id.delete_button);
 
@@ -74,7 +68,6 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
-<<<<<<< HEAD
             Bitmap bitmap = null;
             String mUri = current.getMappingUri();
             try {
@@ -89,10 +82,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-=======
             holder.quantityView.setText("(x" + current.getQuantity() + ")");
->>>>>>> 3c72c07c3acf773742405fb122de69af56313025
             holder.setMapping(current);
         } else {
             // Covers the case of data not being ready yet.
