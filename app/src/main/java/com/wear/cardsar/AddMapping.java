@@ -62,14 +62,17 @@ public class AddMapping extends AppCompatActivity {
         if (requestCode == NEW_MAPPING_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Log.v(TAG, "New mapping is:");
             Log.v(TAG, data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME));
+            int quantity = Integer.parseInt(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_QUANTITY));
             Log.v(TAG, gameName);
 
-            CardMapping mapping = new CardMapping(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME), gameName);
+            CardMapping mapping = new CardMapping(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME), gameName
+                    , data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_DESCRIPTION)
+                    , quantity);
             mMappingViewModel.insert(mapping);
         } else {
             Toast.makeText(
                     getApplicationContext(),
-                    R.string.empty_not_saved,
+                    R.string.mapping_empty_not_saved,
                     Toast.LENGTH_LONG).show();
         }
     }

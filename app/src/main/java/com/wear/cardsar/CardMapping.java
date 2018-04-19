@@ -9,9 +9,11 @@ import android.support.annotation.NonNull;
 @Entity( tableName = "mappings")
 public class CardMapping {
 
-    public CardMapping(@NonNull String mappingName, String game) {
+    public CardMapping(@NonNull String mappingName, String game, String mappingDescription, int quantity) {
         this.mappingName= mappingName;
         this.game = game;
+        this.mappingDescription = mappingDescription;
+        this.quantity = quantity;
     }
 
     @PrimaryKey(autoGenerate = true)
