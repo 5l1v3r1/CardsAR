@@ -70,6 +70,17 @@ public class GameSetup extends AppCompatActivity {
             }
         });
 
+        Button mappingB = (Button) findViewById(R.id.mappingsButton);
+
+        mappingB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ListPlayingCards.class);
+                intent.putExtra(GameListAdapter.MESSAGE_GAME_NAME, gameName);
+                view.getContext().startActivity(intent);
+            }
+        });
+
         Log.d("Removal instructions", removalInstructions);
 
         Log.d("Total cards in deck", String.valueOf(mappings.getnPlayingCards()));

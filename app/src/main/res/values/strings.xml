@@ -7,6 +7,7 @@
     <string name="title_activity_add_mapping">Card Mappings</string>
     <string name="title_activity_specify_mapping">Create Mapping</string>
     <string name="title_activity_main">Game Library</string>
+    <string name="title_activity_list_playing_cards">Playing Card Bindings</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

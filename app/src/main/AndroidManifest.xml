@@ -40,6 +40,9 @@
             android:name=".GameSetup"
             android:label="@string/title_activity_setup"/>
         <activity
+            android:name=".ListPlayingCards"
+            android:label="@string/title_activity_list_playing_cards"/>
+        <activity
             android:name=".AddMapping"
             android:label="@string/title_activity_add_mapping" />
         <activity
