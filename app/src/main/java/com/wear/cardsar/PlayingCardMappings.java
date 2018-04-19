@@ -29,7 +29,15 @@ public class PlayingCardMappings {
         int suit = cardID / 13;
         int rank = cardID % 13;
 
-        return playingCardRanks[rank] + " of " + playingCardSuits[suit];
+        return getRankName(rank) + " of " + getSuitName(suit);
+    }
+
+    public static String getSuitName(int suitID){
+        return playingCardSuits[suitID];
+    }
+
+    public static String getRankName(int rankID){
+        return playingCardRanks[rankID];
     }
 
     public PlayingCardMappings(Game game, AppRepository repository){
@@ -58,6 +66,55 @@ public class PlayingCardMappings {
         }
 
         return unused;
+    }
+
+    public List<Integer> listUnusedSuits(){
+        List<Integer> unusedSuits = new LinkedList<Integer>();
+
+        boolean suitIsUsed = false;
+        for (int i = 0; i < 52; i++){
+            if (i > 0 && i % 13 == 0){
+                if (!suitIsUsed){
+                    unusedSuits.add((i / 13) - 1);
+                }
+                suitIsUsed = false;
+            }
+
+            if (mPlayingCards[i] != null){
+                suitIsUsed = true;
+            }
+        }
+        if (!suitIsUsed){
+            unusedSuits.add(3);
+        }
+
+        return unusedSuits;
+    }
+
+    public List<Integer> listUnusedRanks(){
+        List<Integer> unusedRanks = new LinkedList<Integer>();
+
+        for (int rank = 0; rank < 13; rank++){
+            boolean rankUsed = false;
+            for (int suit = 0; suit < 4; suit++){
+                if (mPlayingCards[(suit * 13) + rank] != null){
+                    rankUsed = true;
+                }
+            }
+            if (!rankUsed){
+                unusedRanks.add(rank);
+            }
+        }
+
+        return unusedRanks;
+    }
+
+    public void printMappings(){
+        for (int i = 0; i < 52; i++){
+            if (mPlayingCards[i] != null){
+                Log.d("Playing cards", getPlayingCardName(i) + " to " + mPlayingCards[i].getMappingName());
+            }
+        }
     }
 
 
@@ -104,6 +161,13 @@ public class PlayingCardMappings {
             // extra cards from other decks must be removed
             if (cardsToAlloc < 0){
                 mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
+            }
+        }
+
+        // Remove totally unused cards
+        for (int i = 0; i < 52; i++){
+            if (mPlayingCards[i] == null){
+                mUnusedPlayingCards[i] = nDecks;
             }
         }
     }

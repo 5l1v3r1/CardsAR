@@ -19,12 +19,14 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
     class GameViewHolder extends RecyclerView.ViewHolder {
         private final TextView GameItemView;
         private final TextView GameDescriptionView;
+        private final TextView GameCardQuantityView;
         private Game mGame;
 
         private GameViewHolder(final View itemView) {
             super(itemView);
             GameItemView = itemView.findViewById(R.id.textView);
             GameDescriptionView = itemView.findViewById(R.id.descView);
+            GameCardQuantityView = itemView.findViewById(R.id.intView);
 
             Button playButton = itemView.findViewById(R.id.play_game_button);
             playButton.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +103,9 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 truncatedDescription += "...";
             }
             holder.GameDescriptionView.setText(truncatedDescription);
+
+            holder.GameCardQuantityView.setText(String.valueOf(mModel.getnMappings(current)) + " mappings");
+
             holder.setGame(current);
         } else {
             // Covers the case of data not being ready yet.

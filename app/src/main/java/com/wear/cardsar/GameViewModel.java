@@ -26,7 +26,12 @@ public class GameViewModel extends AndroidViewModel {
 
     public void insert(Game game) { mRepository.insertGame(game); }
 
-    public void delete(Game gameName) {mRepository.deleteGame(gameName);}
+    public void delete(Game game) {mRepository.deleteGame(game);}
+
+    public int getnMappings(Game game) {
+        List<CardMapping> mappings = mRepository.findStaticMappingsByName(game.getGameName());
+        return mappings.size();
+    }
 
     public Game findGameByName(String gameName) {return mRepository.findGameByName(gameName);}
 }

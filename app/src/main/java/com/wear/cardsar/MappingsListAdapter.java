@@ -58,7 +58,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
-            holder.quantityView.setText(String.valueOf(current.getQuantity()));
+            holder.quantityView.setText("(x" + current.getQuantity() + ")");
             holder.setMapping(current);
         } else {
             // Covers the case of data not being ready yet.
