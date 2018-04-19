@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,9 +43,12 @@ public class SpecifyNewMapping extends AppCompatActivity {
 
             public void onClick(View view) {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+
             }
 
         });
+
+        final ImageView iv = (ImageView) findViewById(R.id.iv);
 
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +92,8 @@ public class SpecifyNewMapping extends AppCompatActivity {
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                ImageView iv = (ImageView) findViewById(R.id.iv);
+                iv.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -95,6 +101,7 @@ public class SpecifyNewMapping extends AppCompatActivity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
         }
     }
 }
