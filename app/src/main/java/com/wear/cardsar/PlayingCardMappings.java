@@ -37,12 +37,6 @@ public class PlayingCardMappings {
     public PlayingCardMappings(Game game, AppRepository repository){
         //mapToPlayingCards(game, repository);
         initialize(game, repository);
-        while(true){
-            synchronized (this){
-                if (ready) break;
-            }
-            sleep(10);
-        }
     }
 
     public int getnPlayingCards(){
