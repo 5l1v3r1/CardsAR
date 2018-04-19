@@ -20,6 +20,9 @@ public class CardMapping {
     @ColumnInfo(name = "mapping_name")
     private String mappingName;
 
+    @ColumnInfo(name = "description")
+    private String mappingDescription;
+
     @ColumnInfo(name = "game")
     private String game;
 
@@ -53,13 +56,12 @@ public class CardMapping {
 
     public void setQuantity(int quantity){ this.quantity = quantity;}
 
-    /*
-    public int getGid() {
-        return this.mid;
+    public void setMappingDescription(String mappingDescription) {
+        this.mappingDescription = mappingDescription;
     }
 
-    public void setGid(int gid) {
-        this.gid = gid;
+    public String getMappingDescription() {
+        return this.mappingDescription;
     }
-    */
+
 }
