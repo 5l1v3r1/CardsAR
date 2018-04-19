@@ -18,7 +18,7 @@ public class ActiveGame extends Thread {
     private CameraView mCameraAPI;
     private Game mGame;
 
-    private CardMapping[] mMappings;
+    private PlayingCardMappings mMappings;
 
     public ActiveGame(CameraView cameraApi, Game game, AppRepository repository){
         super();
@@ -31,8 +31,7 @@ public class ActiveGame extends Thread {
 
         mGame = game;
 
-        mMappings = new CardMapping[52];
-        initializeCardMappings(game, repository);
+        mMappings = new PlayingCardMappings(game, repository);
 
         System.out.println("ActiveGame received " + game.getGameName());
     }
@@ -66,31 +65,5 @@ public class ActiveGame extends Thread {
 
     public void kill(){
         killed = true;
-    }
-
-    private List<CardMapping> loadMappings(Game game, AppRepository repository){
-        LiveData<List<CardMapping>> liveMappingData = repository.getMappings(game.getGameName());
-        if (liveMappingData.getValue() != null){
-            return liveMappingData.getValue();
-        }else{
-            return new LinkedList<>();
-        }
-    }
-
-    private void initializeCardMappings(Game game, AppRepository repository){
-        List<CardMapping> mappings = loadMappings(game, repository);
-
-        int currentPCard = 0;
-        for (CardMapping mapping : mappings){
-            mMappings[currentPCard] = mapping;
-            currentPCard++;
-
-            //TODO: multiple decks?
-            //TODO: currentPCard >= 52
-            for (int i = 0; i < mapping.getQuantity(); i++){
-                mMappings[currentPCard] = mapping;
-                currentPCard++;
-            }
-        }
     }
 }
