@@ -13,6 +13,7 @@ import java.util.List;
 public class MappingViewModel extends AndroidViewModel {
 
     private AppRepository mRepository;
+    private Application app;
 
     private LiveData<List<CardMapping>> mAllMappings;
 
@@ -20,6 +21,7 @@ public class MappingViewModel extends AndroidViewModel {
         super(application);
         mRepository = new AppRepository(application);
         mAllMappings = null;
+        this.app = application;
     }
 
     LiveData<List<CardMapping>> getAllMappings(String gameName) {

@@ -9,11 +9,12 @@ import android.support.annotation.NonNull;
 @Entity( tableName = "mappings")
 public class CardMapping {
 
-    public CardMapping(@NonNull String mappingName, String game, String mappingDescription, int quantity) {
+    public CardMapping(@NonNull String mappingName, String game, String mappingDescription, int quantity, String mappingUri) {
         this.mappingName= mappingName;
         this.game = game;
         this.mappingDescription = mappingDescription;
         this.quantity = quantity;
+        this.mappingUri = mappingUri;
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -30,6 +31,9 @@ public class CardMapping {
 
     @ColumnInfo(name = "quantity")
     private int quantity;
+
+    @ColumnInfo(name = "uri")
+    private String mappingUri;
 
 
     ///Getters and Setters for each value
@@ -65,5 +69,9 @@ public class CardMapping {
     public String getMappingDescription() {
         return this.mappingDescription;
     }
+
+    public String getMappingUri() { return this.mappingUri; }
+
+    public void setMappingUri(String mappingUri) { this.mappingUri = mappingUri; }
 
 }
