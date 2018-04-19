@@ -3,6 +3,7 @@ package com.wear.cardsar;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -60,10 +62,15 @@ public class AddMapping extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_MAPPING_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Log.v(TAG, "New mapping is:");
-            Log.v(TAG, data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME));
             int quantity = Integer.parseInt(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_QUANTITY));
-            Log.v(TAG, gameName);
+            if(data.getStringExtra("pic") == "true"){
+                Log.v(TAG, "Got bitmap");
+                Bitmap btm = data.getParcelableExtra("data");
+                ImageView iv = (ImageView) findViewById(R.id.iv);
+                iv.setImageBitmap(btm);
+            }else {
+                Log.v(TAG, "no bitmap");
+            }
 
             CardMapping mapping = new CardMapping(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME), gameName
                     , data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_DESCRIPTION)
