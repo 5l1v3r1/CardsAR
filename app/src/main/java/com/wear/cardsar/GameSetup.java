@@ -90,7 +90,7 @@ public class GameSetup extends AppCompatActivity {
 
         StringBuilder instructionBuilder = new StringBuilder();
 
-        int nDecks = (mappings.getnPlayingCards() / 52) + 1;
+        int nDecks = mappings.getnDecks();
 
         instructionBuilder.append("Use ");
         instructionBuilder.append(nDecks);

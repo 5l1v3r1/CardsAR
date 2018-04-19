@@ -20,7 +20,7 @@ public class PlayingCardMappings {
     private final int[] mUnusedPlayingCards = new int[52];
     private int nPlayingCards;
     private int nUniqueCards;
-    private int lastAvailablePCard = 0;
+    private int nDecks;
 
     public static final String[] playingCardSuits = {"Clubs", "Diamonds", "Hearts", "Spades"};
     public static final String[] playingCardRanks = {"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "King", "Queen"};
@@ -51,6 +51,8 @@ public class PlayingCardMappings {
     public int getnUniqueCards(){
         return nUniqueCards;
     }
+
+    public int getnDecks(){return nDecks;}
 
     public CardMapping lookupPlayingCard(int cardID){
         return mPlayingCards[cardID];
@@ -143,33 +145,44 @@ public class PlayingCardMappings {
 
         countCards(mappings);
 
-        int nDecks = (nPlayingCards / 52) + 1;
+        nDecks = (nPlayingCards / 52) + 1;
 
-        int currentPCard = 0;
-        for (CardMapping mapping : mappings){
-            int cardsToAlloc = mapping.getQuantity();
-            while (cardsToAlloc > 0){
-                mPlayingCards[currentPCard] = mapping;
-                currentPCard++;
+        boolean exception;
+        do {
+            exception = false;
+            try {
+                int currentPCard = 0;
+                for (CardMapping mapping : mappings) {
+                    int cardsToAlloc = mapping.getQuantity();
+                    while (cardsToAlloc > 0) {
+                        mPlayingCards[currentPCard] = mapping;
+                        currentPCard++;
 
-                // after mapping to a
-                cardsToAlloc -= nDecks;
+                        // after mapping to a
+                        cardsToAlloc -= nDecks;
+                    }
+
+                    // Each unique card is mapped to a playing card
+                    // If there are multiple decks, and not enough of unique mapping,
+                    // extra cards from other decks must be removed
+                    if (cardsToAlloc < 0) {
+                        mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
+                    }
+                }
+
+                // Remove totally unused cards
+                for (int i = 0; i < 52; i++) {
+                    if (mPlayingCards[i] == null) {
+                        mUnusedPlayingCards[i] = nDecks;
+                    }
+                }
+
+            }catch(IndexOutOfBoundsException e){
+                nDecks++;
+                exception = true;
             }
 
-            // Each unique card is mapped to a playing card
-            // If there are multiple decks, and not enough of unique mapping,
-            // extra cards from other decks must be removed
-            if (cardsToAlloc < 0){
-                mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
-            }
-        }
-
-        // Remove totally unused cards
-        for (int i = 0; i < 52; i++){
-            if (mPlayingCards[i] == null){
-                mUnusedPlayingCards[i] = nDecks;
-            }
-        }
+        }while(exception);
     }
 
 
