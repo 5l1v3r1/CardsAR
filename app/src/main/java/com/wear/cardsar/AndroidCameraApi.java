@@ -71,6 +71,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
 
         mActiveGame = new ActiveGame(this);
         mActiveGame.start();
+        //mActiveGame.pauseWork();
 
         lastInputFrameLock = new ReentrantLock();
         outputFrameLock = new ReentrantLock();
@@ -78,7 +79,14 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         final Button feedToggleButton = findViewById(R.id.btn_togglelivefeed);
         feedToggleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 framePaused = !framePaused;
+
+                if (framePaused){
+                    mActiveGame.pauseWork();
+
+                }
+                else mActiveGame.resumeWork();
             }
         });
 
@@ -200,9 +208,10 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
 
         if (!framePaused){
             setLastInputFrame(inputMat);
+            getOutputFrame(inputMat);
         }
 
-        getOutputFrame(inputMat);
+        //getOutputFrame(inputMat);
 
         return inputMat;
     }

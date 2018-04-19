@@ -1,5 +1,6 @@
 package com.wear.cardsar;
 
+import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -10,6 +11,7 @@ import org.opencv.core.KeyPoint;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Scalar;
@@ -35,7 +37,7 @@ public class DetectionAlgorithm{
 
     public void processInput(Mat input, Mat output){
 
-        detectEdges(input, output);
+        detectOutlines(input, output);
     }
 
     public List<DetectedCard> findAllCards(Mat input){
@@ -52,9 +54,11 @@ public class DetectionAlgorithm{
 
         Mat gray = new Mat(input.size(), CvType.CV_8UC1);
         Mat blur = new Mat(input.size(), CvType.CV_8UC1);
-        Imgproc.cvtColor(input, gray, Imgproc.COLOR_RGB2GRAY, 4);
+        Imgproc.cvtColor(input, gray, Imgproc.COLOR_RGB2GRAY);
 
-        gray.copyTo(output);
+        Mat edges = new Mat(input.size(), CvType.CV_8UC1);
+        Imgproc.cvtColor(input, edges, Imgproc.COLOR_RGB2GRAY, 4);
+        Imgproc.Canny(edges, edges, 80, 100);
 
 
 
@@ -64,7 +68,7 @@ public class DetectionAlgorithm{
 
         Imgproc.GaussianBlur(gray,blur,s,0);
 
-        blur.copyTo(output);
+        //blur.copyTo(output);
 
 
         int w = input.width();
@@ -76,25 +80,42 @@ public class DetectionAlgorithm{
 
         int totalBytes = (int)(gray.total() * gray.channels());
         byte buff[] = new byte[totalBytes];
-        int px = gray.get(h100, w2, buff);
-        int threshlevel = px + 60;
-        Mat threshimg = new Mat();
-        Imgproc.threshold(blur, threshimg, threshlevel,255, Imgproc.THRESH_BINARY);
-        Mat hierarchy = new Mat();
-        java.util.List<org.opencv.core.MatOfPoint> contours = new java.util.ArrayList<>();
-        Imgproc.findContours(threshimg,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+        gray.get(h100, w2, buff);
+        int threshlevel = buff[0] + 60;
+        //System.out.println("px: " + buff[0] +"jkjkjkj"+ buff[1]);
+        //Mat threshimg = new Mat(input.size(), CvType.CV_8UC1);
+        Mat invertcolormatrix= new Mat(blur.rows(),blur.cols(), blur.type(), new Scalar(255,255,255));
 
-        java.util.List<org.opencv.core.MatOfPoint> srtcontours = new java.util.ArrayList<>();
+        //Core.subtract(invertcolormatrix, blur, blur);
+        Mat threshimg = new Mat(input.size(), CvType.CV_8UC1);
+
+        //Imgproc.cvtColor(input, threshimg, Imgproc.COLOR_RGB2GRAY, 4);
+        //Imgproc.Canny(threshimg, threshimg, 80, 100);
+        //Imgproc.adaptiveThreshold(blur, threshimg, 255,Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY,7, 5);
+        Imgproc.threshold(blur, threshimg, threshlevel,255, Imgproc.THRESH_BINARY);
+        edges.copyTo(threshimg);
+        Mat hierarchy = new Mat(input.size(), CvType.CV_8UC1);
+        java.util.List<org.opencv.core.MatOfPoint> contours = new java.util.ArrayList<org.opencv.core.MatOfPoint>();
+        Imgproc.findContours(threshimg,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0) );
+
+        java.util.List<org.opencv.core.MatOfPoint> srtcontours = new java.util.ArrayList<org.opencv.core.MatOfPoint>();
         Sortct comparator = new Sortct(contours);
 
-        Mat srthier = new Mat();
+        Mat srthier = new Mat(input.size(), hierarchy.type());
         hierarchy.copyTo(srthier);
+        int tb = (int)(hierarchy.total() * hierarchy.channels());
+        System.out.println("w "+hierarchy.height()+"jkjkghghghghghghghj---"+hierarchy.width()+ " ddd " + tb);
+
         Integer[] indexes = comparator.createIndexArray();
         Arrays.sort(indexes,comparator);
         int cntiscard[] = new int[indexes.length];
         for (int i = 0; i < indexes.length; i++){
             srtcontours.add(contours.get(indexes[i]));
-            srthier.put(0, i, hierarchy.get(0, i));
+
+            int buf[] = new int[tb];
+            hierarchy.get(0,indexes[i],buf);
+            srthier.put(0,i,buf);
+
             cntiscard[i] = 0;
         }
         for (int i = 0; i < srtcontours.size(); i++){
@@ -104,36 +125,52 @@ public class DetectionAlgorithm{
             MatOfPoint2f approx=new MatOfPoint2f();
 
             Imgproc.approxPolyDP(a,approx,peri*0.01,true);
-            int tb = (int)(srthier.total() * srthier.channels());
-            byte buf[] = new byte[tb];
+            tb = (int)(srthier.total() * srthier.channels());
+            tb = (int)(srthier.total() * srthier.channels());
+            int buf[] = new int[tb];
+
+            srthier.get(0,i, buf);
+
+            System.out.println(srtcontours.size()+"jkjkghghghghghghghj---"+tb + " ddd\n");
+            if (buf[3]==-1){
+                Scalar cl = new Scalar(0,255,0);
+                System.out.println("ddyyd\n");
+                List<MatOfPoint> tmplist = new ArrayList<>();
+                tmplist.add(srtcontours.get(i));
+                //Imgproc.drawContours(input,tmplist,-1, cl, 2);
+            }
             //int pix=edges.get(h100, w2, buff);
-            if (size<120000 && size>25000 && approx.toArray().length == 4 && srthier.get(i,3, buf) == -1){
+            if (size<120000 && size>25000 && approx.toArray().length == 4 && buf[3] == -1){
                 cntiscard[i] = 1;
+
+
             }
             approx.release();
             a.release();
         }
         for (int i = 0; i < srtcontours.size(); i++){
-            if (cntiscard[i] > 0){
-                Scalar cl = new Scalar(255,0,0);
+
+            if (cntiscard[i] == 1){
+                Scalar cl = new Scalar(0,255,0);
 
                 List<MatOfPoint> tmplist = new ArrayList<>();
                 tmplist.add(srtcontours.get(i));
                 Imgproc.drawContours(input,tmplist,-1, cl, 2);
-
             }
+
         }
 
 
         for (int i = 0; i < srtcontours.size(); i++){
-            srtcontours.get(i).release();
+            //srtcontours.get(i).release();
         }
+        input.copyTo(output);
 
-        threshimg.release();
+        //threshimg.release();
 
-        blur.release();
+        //blur.release();
 
-        gray.release();
+        //gray.release();
     }
 
     public void detectEdges(Mat frame, Mat output){

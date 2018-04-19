@@ -30,7 +30,8 @@ public class Sortct implements Comparator<Integer>
     public int compare(Integer a, Integer b)
     {
         Double d=Imgproc.contourArea(arr.get(a))-Imgproc.contourArea(arr.get(b));
-
-        return d.intValue();
+        if (d>0) return 1;
+        if (d<0) return -1;
+        return 0;
     }
 }
