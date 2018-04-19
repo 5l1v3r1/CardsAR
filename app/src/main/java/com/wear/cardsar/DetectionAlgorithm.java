@@ -22,6 +22,7 @@ import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.List;
@@ -99,16 +100,26 @@ public class DetectionAlgorithm{
         java.util.List<org.opencv.core.MatOfPoint> contours = new java.util.ArrayList<org.opencv.core.MatOfPoint>();
         Imgproc.findContours(threshimg,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0) );
 
+        // Filter by size
+        List<MatOfPoint> filteredContours = new ArrayList<>();
+        for (MatOfPoint contour : contours){
+            if (Imgproc.contourArea(contour) > 1000){
+                filteredContours.add(contour);
+            }
+        }
+        contours = filteredContours;
+
         java.util.List<org.opencv.core.MatOfPoint> srtcontours = new java.util.ArrayList<org.opencv.core.MatOfPoint>();
         Sortct comparator = new Sortct(contours);
 
         Mat srthier = new Mat(input.size(), hierarchy.type());
         hierarchy.copyTo(srthier);
         int tb = (int)(hierarchy.total() * hierarchy.channels());
-        System.out.println("w "+hierarchy.height()+"jkjkghghghghghghghj---"+hierarchy.width()+ " ddd " + tb);
+        //System.out.println("w "+hierarchy.height()+"jkjkghghghghghghghj---"+hierarchy.width()+ " ddd " + tb);
 
         Integer[] indexes = comparator.createIndexArray();
         Arrays.sort(indexes,comparator);
+
         int cntiscard[] = new int[indexes.length];
         for (int i = 0; i < indexes.length; i++){
             srtcontours.add(contours.get(indexes[i]));
@@ -119,6 +130,7 @@ public class DetectionAlgorithm{
 
             cntiscard[i] = 0;
         }
+        System.out.println("BEGIN CONTOURS");
         for (int i = 0; i < srtcontours.size(); i++){
             double size = Imgproc.contourArea(srtcontours.get(i));
             MatOfPoint2f a = new MatOfPoint2f(srtcontours.get(i).toArray());
@@ -127,24 +139,25 @@ public class DetectionAlgorithm{
 
             Imgproc.approxPolyDP(a,approx,peri*0.01,true);
             tb = (int)(srthier.total() * srthier.channels());
-            tb = (int)(srthier.total() * srthier.channels());
             int buf[] = new int[tb];
 
             srthier.get(0,i, buf);
 
-            System.out.println(srtcontours.size()+"jkjkghghghghghghghj---"+tb + " ddd\n");
-            if (buf[3]==-1){
+            //System.out.println(srtcontours.size()+"jkjkghghghghghghghj---"+tb + " ddd\n");
+            if (buf[3]==-1 && approx.toArray().length == 4){
                 Scalar cl = new Scalar(0,255,0);
                 System.out.println("ddyyd\n");
                 List<MatOfPoint> tmplist = new ArrayList<>();
-                tmplist.add(srtcontours.get(i));
-                //Imgproc.drawContours(input,tmplist,-1, cl, 2);
+                //tmplist.add(srtcontours.get(i));
+                MatOfPoint approxf1 = new MatOfPoint();
+                approx.convertTo(approxf1, CvType.CV_32S);
+                tmplist.add(approxf1);
+                Imgproc.drawContours(input,tmplist,-1, cl, 2);
+                approxf1.release();
             }
             //int pix=edges.get(h100, w2, buff);
             if (size<120000 && size>25000 && approx.toArray().length == 4 && buf[3] == -1){
                 cntiscard[i] = 1;
-
-
             }
             approx.release();
             a.release();
@@ -152,7 +165,7 @@ public class DetectionAlgorithm{
         for (int i = 0; i < srtcontours.size(); i++){
 
             if (cntiscard[i] == 1){
-                Scalar cl = new Scalar(0,255,0);
+                Scalar cl = new Scalar(255,0,0);
 
                 List<MatOfPoint> tmplist = new ArrayList<>();
                 tmplist.add(srtcontours.get(i));

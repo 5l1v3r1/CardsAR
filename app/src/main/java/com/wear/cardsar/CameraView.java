@@ -74,7 +74,10 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
         AppRepository repo = new AppRepository(getApplication());
         Game game = repo.findGameByName(intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
 
-        mActiveGame = new ActiveGame(this, game, repo);
+        getSupportActionBar().setTitle(game.getGameName());
+
+        PlayingCardMappings pcm = new PlayingCardMappings(game, repo);
+        mActiveGame = new ActiveGame(this, pcm);
         mActiveGame.start();
         mActiveGame.pauseWork();
 
@@ -87,12 +90,14 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
                 framePaused = !framePaused;
 
+                /*
                 if (framePaused){
                     mActiveGame.resumeWork();
 
                 }else{
                     mActiveGame.pauseWork();
                 }
+                */
             }
         });
 
@@ -214,12 +219,10 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         if (!framePaused){
             setLastInputFrame(inputMat);
-            setOutputFrame(inputMat);
-            return inputMat;
-        }else{
-            getOutputFrame(inputMat);
-            return inputMat;
         }
+
+        getOutputFrame(inputMat);
+        return inputMat;
 
     }
 
