@@ -1,6 +1,11 @@
 package com.wear.cardsar;
 
+import android.arch.lifecycle.LiveData;
+
 import org.opencv.core.Mat;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by larsoe4 on 4/2/2018.
@@ -10,11 +15,12 @@ public class ActiveGame extends Thread {
     private boolean runAlgorithm;
     private boolean killed;
     private DetectionAlgorithm da;
-    private AndroidCameraApi mCameraAPI;
+    private CameraView mCameraAPI;
+    private Game mGame;
 
-    private CardMapping[] mappings;
+    private PlayingCardMappings mMappings;
 
-    public ActiveGame(AndroidCameraApi cameraApi){
+    public ActiveGame(CameraView cameraApi, Game game, AppRepository repository){
         super();
 
         runAlgorithm = false;
@@ -23,7 +29,11 @@ public class ActiveGame extends Thread {
         da = new DetectionAlgorithm();
         mCameraAPI = cameraApi;
 
-        mappings = new CardMapping[52];
+        mGame = game;
+
+        mMappings = new PlayingCardMappings(game, repository);
+
+        System.out.println("ActiveGame received " + game.getGameName());
     }
 
     @Override

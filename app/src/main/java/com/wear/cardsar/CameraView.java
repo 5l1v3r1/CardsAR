@@ -5,9 +5,9 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.imgproc.Imgproc;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,12 +19,12 @@ import android.widget.Button;
 
 import java.util.concurrent.locks.*;
 
-public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
+public class CameraView extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     private static final String TAG = "OCVSample::Activity";
 
     private PortraitCameraView mOpenCvCameraView;
-    private boolean              mIsJavaCamera = true;
-    private MenuItem             mItemSwitchCamera = null;
+    private boolean mIsJavaCamera = true;
+    private MenuItem mItemSwitchCamera = null;
 
     private boolean framePaused = false;
     private Mat lastInputFrame = null;
@@ -50,7 +50,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         }
     };
 
-    public AndroidCameraApi() {
+    public CameraView() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
 
@@ -61,7 +61,7 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(R.layout.activity_android_camera_api);
+        setContentView(R.layout.activity_camera_view);
 
         mOpenCvCameraView = (PortraitCameraView) findViewById(R.id.texture);
 
@@ -69,7 +69,12 @@ public class AndroidCameraApi extends AppCompatActivity implements CameraBridgeV
 
         mOpenCvCameraView.setCvCameraViewListener(this);
 
-        mActiveGame = new ActiveGame(this);
+        Intent intent = getIntent();
+
+        AppRepository repo = new AppRepository(getApplication());
+        Game game = repo.findGameByName(intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
+
+        mActiveGame = new ActiveGame(this, game, repo);
         mActiveGame.start();
         //mActiveGame.pauseWork();
 

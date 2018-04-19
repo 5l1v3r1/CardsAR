@@ -20,15 +20,24 @@ public interface MappingsDao {
     @Query("SELECT * FROM mappings")
     LiveData<List<CardMapping>> getAll();
 
-    @Query("SELECT * FROM mappings where card_mapping = :gid ")
-    LiveData<List<CardMapping>> findByGame(int gid);
+    @Query("SELECT * FROM mappings where game = :gameName ")
+    LiveData<List<CardMapping>> findByGame(String gameName);
 
-    @Query("SELECT COUNT(*) from mappings where card_mapping = :gid")
-    int countMappings(int gid);
+    @Query("SELECT * FROM mappings where game = :mid")
+    CardMapping findById(int mid);
+
+    @Query("SELECT COUNT(*) from mappings")
+    int countMappings();
 
     @Insert
-    void insertAll(Game... games);
+    void insertAll(CardMapping... mappings);
+
+    @Insert
+    void insert(CardMapping mapping);
 
     @Delete
-    void delete(Game game);
+    void delete(CardMapping mapping);
+
+    @Query("DELETE FROM mappings where game = :gameName")
+    void deleteGameMappings(String gameName);
 }

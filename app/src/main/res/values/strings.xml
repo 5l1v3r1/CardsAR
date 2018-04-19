@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Game List</string>
+    <string name="app_name">CardsAR</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -16,6 +16,20 @@
     <string name="take_picture">Pause camera</string>
 
     <string name="hint_game">Game Name</string>
+    <string name="hint_description">Game Description</string>
     <string name="button_save">Save</string>
-    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="empty_not_saved">Game not saved because it is empty.</string>
+    <string name="mapping_empty_not_saved">Mapping not saved because it is empty.</string>
+
+    <string name="no_game">No game</string>
+
+    <string name="edit_game_btn_txt">Edit</string>
+    <string name="play_game_btn_txt">Play</string>
+    <string name="delete_game_btn_txt">Delete</string>
+    <string name="title_activity_add_mapping">AddMapping</string>
+
+    <string name="hint_mapping_name">Name</string>
+    <string name="hint_mapping_description">Description</string>
+    <string name="hint_mapping_quantity">Quantity</string>
+
 </resources>

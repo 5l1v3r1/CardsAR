@@ -23,8 +23,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,29 +31,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddGameActivity"
-            android:label="@string/title_activity_add_game"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".SetupActivity"
-            android:label="@string/title_activity_setup"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_setup" />
         <activity
             android:name=".MappingActivity"
-            android:label="@string/title_activity_mapping"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_mapping" />
+        <activity android:name=".CameraView" />
+        <activity android:name=".addGame" />
+        <activity android:name=".GameSetup" />
         <activity
-            android:name=".Camera"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_camera"
-            android:theme="@style/FullscreenTheme" />
-        <activity android:name=".AndroidCameraApi" />
-        <activity
-            android:name=".addGame">
-
-
-        </activity>
+            android:name=".AddMapping"
+            android:label="@string/title_activity_add_mapping" />
+        <activity android:name=".SpecifyNewMapping"></activity>
     </application>
 
 </manifest>

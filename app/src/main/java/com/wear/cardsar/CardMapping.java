@@ -4,22 +4,33 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
-
-/**
- * Created by Carlos on 3/28/2018.
- */
+import android.support.annotation.NonNull;
 
 @Entity( tableName = "mappings")
 public class CardMapping {
 
-    @PrimaryKey
+    public CardMapping(@NonNull String mappingName, String game, String mappingDescription, int quantity) {
+        this.mappingName= mappingName;
+        this.game = game;
+        this.mappingDescription = mappingDescription;
+        this.quantity = quantity;
+    }
+
+    @PrimaryKey(autoGenerate = true)
     private int mid;
 
     @ColumnInfo(name = "mapping_name")
     private String mappingName;
 
-    @ColumnInfo(name = "card_mapping")
-    private int cardMapping;
+    @ColumnInfo(name = "description")
+    private String mappingDescription;
+
+    @ColumnInfo(name = "game")
+    private String game;
+
+    @ColumnInfo(name = "quantity")
+    private int quantity;
+
 
     ///Getters and Setters for each value
 
@@ -39,24 +50,20 @@ public class CardMapping {
         this.mappingName = mappingName;
     }
 
-    public int getCardName() {
-        return this.cardMapping;
+    public String getGame() { return this.game;}
+
+    public void setGame(String gameName) { this.game = gameName;}
+
+    public int getQuantity() {return this.quantity;}
+
+    public void setQuantity(int quantity){ this.quantity = quantity;}
+
+    public void setMappingDescription(String mappingDescription) {
+        this.mappingDescription = mappingDescription;
     }
 
-    public int getCardMapping() {
-        return this.cardMapping;
-    }
-    public void setCardMapping(int cardMapping) {
-        this.cardMapping = cardMapping;
+    public String getMappingDescription() {
+        return this.mappingDescription;
     }
 
-    /*
-    public int getGid() {
-        return this.mid;
-    }
-
-    public void setGid(int gid) {
-        this.gid = gid;
-    }
-    */
 }

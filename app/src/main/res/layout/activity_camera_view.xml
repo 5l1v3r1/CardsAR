@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.inducesmile.androidcameraapi2.AndroidCameraApi">
+    tools:context="com.wear.cardsar.CameraView">
 
     <com.wear.cardsar.PortraitCameraView
         xmlns:opencv="http://schemas.android.com/apk/res-auto"
@@ -19,13 +19,13 @@
 
         android:visibility="gone"
         opencv:camera_id="any"/>
+
     <Button
         android:id="@+id/btn_togglelivefeed"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="14dp"
         android:text="@string/take_picture" />
 </RelativeLayout>

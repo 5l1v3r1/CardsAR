@@ -32,7 +32,7 @@ import org.opencv.imgproc.Imgproc;
 public class PortraitCameraView extends CameraBridgeViewBase implements PreviewCallback {
 
     private static final int MAGIC_TEXTURE_ID = 10;
-    private static final String TAG = "JavaCameraView";
+    private static final String TAG = "PortraitCameraView";
 
     private byte mBuffer[];
     private Mat[] mFrameChain;
