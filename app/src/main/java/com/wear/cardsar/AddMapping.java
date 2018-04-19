@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -52,6 +53,16 @@ public class AddMapping extends AppCompatActivity {
             public void onChanged(@Nullable final List<CardMapping> words) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setmMappings(words);
+            }
+        });
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backIntent = new Intent(view.getContext(), MainActivity.class);
+                backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                view.getContext().startActivity(backIntent);
             }
         });
     }

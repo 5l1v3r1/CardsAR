@@ -38,7 +38,13 @@ public class GameSetup extends AppCompatActivity {
         gameNameTextView.setText(mGame.getGameName());
 
         TextView gameDescTextView = (TextView) findViewById(R.id.gameDesc);
-        gameDescTextView.setText(mGame.getDescription()); // TO-DO: Get description from mGame
+        gameDescTextView.setText(mGame.getDescription());
+
+        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
+        String removalInstructions = buildDeckInstructions(mappings);
+
+        TextView instructionView = findViewById(R.id.gameInstructions);
+        instructionView.setText(removalInstructions);
 
         Button readyB = (Button)findViewById(R.id.readyButton);
 
@@ -61,9 +67,6 @@ public class GameSetup extends AppCompatActivity {
             }
         });
 
-        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
-        String removalInstructions = buildDeckInstructions(mappings);
-
         Log.d("Removal instructions", removalInstructions);
 
         Log.d("Total cards in deck", String.valueOf(mappings.getnPlayingCards()));
@@ -79,8 +82,9 @@ public class GameSetup extends AppCompatActivity {
         instructionBuilder.append(nDecks);
         instructionBuilder.append(" deck");
         if (nDecks > 1){
-            instructionBuilder.append("s");
+            instructionBuilder.append('s');
         }
+        instructionBuilder.append('\n');
 
         for (Pair<Integer, Integer> unusedCard : mappings.listUnusedCards()){
             instructionBuilder.append("Remove ");
@@ -88,9 +92,9 @@ public class GameSetup extends AppCompatActivity {
             instructionBuilder.append(" ");
             instructionBuilder.append(PlayingCardMappings.getPlayingCardName(unusedCard.first));
             if (unusedCard.second > 1) {
-                instructionBuilder.append("s");
+                instructionBuilder.append('s');
             }
-            instructionBuilder.append("\n");
+            instructionBuilder.append('\n');
         }
 
         return instructionBuilder.toString();
