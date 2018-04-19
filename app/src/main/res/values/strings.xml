@@ -18,7 +18,9 @@
     <string name="hint_game">Game Name</string>
     <string name="hint_description">Game Description</string>
     <string name="button_save">Save</string>
-    <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="empty_not_saved">Game not saved because it is empty.</string>
+    <string name="mapping_empty_not_saved">Mapping not saved because it is empty.</string>
+
     <string name="no_game">No game</string>
 
     <string name="edit_game_btn_txt">Edit</string>
@@ -26,8 +28,8 @@
     <string name="delete_game_btn_txt">Delete</string>
     <string name="title_activity_add_mapping">AddMapping</string>
 
-    <string name="hint_mapping_name">Mapping Name</string>
-    <string name="hint_card_mapping">Card Mapping</string>
-    <string name="hint_card_quantity">Quantity</string>
+    <string name="hint_mapping_name">Name</string>
+    <string name="hint_mapping_description">Description</string>
+    <string name="hint_mapping_quantity">Quantity</string>
 
 </resources>
