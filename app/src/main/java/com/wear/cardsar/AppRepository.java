@@ -1,24 +1,58 @@
 package com.wear.cardsar;
 
 import android.app.Application;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-public class AppRepository {
+public class AppRepository implements LifecycleOwner{
 
     private GameDao mGameDao;
     private MappingsDao mappingsDao;
     private LiveData<List<Game>> mAllGames;
     private LiveData<List<CardMapping>> mGameCardMappings;
+    private Lifecycle lifecycle = null;
 
     AppRepository(Application application) {
         AppDatabase db = AppDatabase.getAppDatabase(application);
         mGameDao = db.gameDao();
         mappingsDao = db.mappingDao();
         mAllGames = mGameDao.getAll();
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+
+        if (lifecycle == null){
+            lifecycle = new Lifecycle() {
+                @Override
+                public void addObserver(@NonNull LifecycleObserver observer) {
+
+                }
+
+                @Override
+                public void removeObserver(@NonNull LifecycleObserver observer) {
+
+                }
+
+                @NonNull
+                @Override
+                public State getCurrentState() {
+                    return State.RESUMED;
+                }
+            };
+        }
+        return lifecycle;
     }
 
     LiveData<List<Game>> getAllGames() {
@@ -34,14 +68,12 @@ public class AppRepository {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
-    public void deleteGame (Game gameName) {
+    public void deleteGame (Game game) {
         //Delete all mappings for a game
-        LiveData<List<CardMapping>> gameMappings = getMappings(gameName.getGameName());
-        for (CardMapping mapping : gameMappings.getValue()) {
-            deleteMapping(mapping);
-        }
+        new deleteGameMappingsAsyncTask(mappingsDao).execute(game.getGameName());
+
         //Delete actual game
-        new deleteGameAsyncTask(mGameDao).execute(gameName);
+        new deleteGameAsyncTask(mGameDao).execute(game);
     }
 
     public void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
@@ -53,7 +85,12 @@ public class AppRepository {
 
         try {
             return asyncTask.get();
-        }catch(Exception e){
+        }catch(InterruptedException e){
+            e.printStackTrace();
+
+            return null;
+
+        }catch(ExecutionException e){
             e.printStackTrace();
 
             return null;
@@ -130,6 +167,21 @@ public class AppRepository {
         protected Void doInBackground(final CardMapping... params) {
             //Game game = mAsyncTaskDao.findByName(params[0]);
             mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+    private static class deleteGameMappingsAsyncTask extends AsyncTask<String, Void, Void> {
+        private MappingsDao mAsyncTaskDao;
+
+        deleteGameMappingsAsyncTask(MappingsDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final String... params) {
+            //Game game = mAsyncTaskDao.findByName(params[0]);
+            mAsyncTaskDao.deleteGameMappings(params[0]);
             return null;
         }
     }
