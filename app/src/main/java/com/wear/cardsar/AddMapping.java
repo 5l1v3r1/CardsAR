@@ -37,7 +37,7 @@ public class AddMapping extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mapping);
 
-        Button addButton = findViewById(R.id.addButton);
+        FloatingActionButton addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
