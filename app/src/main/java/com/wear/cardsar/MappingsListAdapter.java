@@ -15,12 +15,14 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
 
     class MappingViewHolder extends RecyclerView.ViewHolder {
         private final TextView mappingItemView;
+        private final TextView quantityView;
         private CardMapping mMapping;
 
         private MappingViewHolder(final View itemView) {
             super(itemView);
 
             mappingItemView = itemView.findViewById(R.id.mappingTextView);
+            quantityView = itemView.findViewById(R.id.intView);
 
             Button deleteButton = itemView.findViewById(R.id.delete_button);
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
+            holder.quantityView.setText(String.valueOf(current.getQuantity()));
             holder.setMapping(current);
         } else {
             // Covers the case of data not being ready yet.
