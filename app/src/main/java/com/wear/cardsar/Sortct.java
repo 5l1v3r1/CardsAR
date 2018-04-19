@@ -23,6 +23,7 @@ public class Sortct implements Comparator<Integer>
         Integer[] indexes = new Integer[arr.size()];
         for (int i = 0; i < arr.size(); i++)
         {
+
             indexes[i] = i; // Autoboxing
         }
         return indexes;
@@ -30,7 +31,8 @@ public class Sortct implements Comparator<Integer>
     public int compare(Integer a, Integer b)
     {
         Double d=Imgproc.contourArea(arr.get(a))-Imgproc.contourArea(arr.get(b));
-
-        return d.intValue();
+        if (d>0) return 1;
+        if (d<0) return -1;
+        return 0;
     }
 }

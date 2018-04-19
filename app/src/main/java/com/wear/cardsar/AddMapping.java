@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class AddMapping extends AppCompatActivity {
 
         gameName = getIntent().getStringExtra(GameListAdapter.MESSAGE_GAME_NAME);
         Log.v(TAG, "game name: " + gameName);
+        getSupportActionBar().setTitle(gameName);
 
         mMappingViewModel = ViewModelProviders.of(this).get(MappingViewModel.class);
 
@@ -61,6 +63,16 @@ public class AddMapping extends AppCompatActivity {
             public void onChanged(@Nullable final List<CardMapping> words) {
                 // Update the cached copy of the words in the adapter.
                 adapter.setmMappings(words);
+            }
+        });
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backIntent = new Intent(view.getContext(), MainActivity.class);
+                backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                view.getContext().startActivity(backIntent);
             }
         });
     }

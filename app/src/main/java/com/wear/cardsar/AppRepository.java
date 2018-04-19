@@ -111,6 +111,20 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
+    public List<CardMapping> findStaticMappingsByName(String gameName){
+
+        findGameMappingsAsyncTask asyncTask = new findGameMappingsAsyncTask(mappingsDao);
+        asyncTask.execute(gameName);
+
+        try {
+            return asyncTask.get();
+        }catch(Exception e){
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
     private static class insertAsyncTask extends AsyncTask<Game, Void, Void> {
 
         private GameDao mAsyncTaskDao;
@@ -219,5 +233,19 @@ public class AppRepository implements LifecycleOwner{
             return mAsyncTaskDao.findById(params[0]);
         }
 
+    }
+
+    private static class findGameMappingsAsyncTask extends AsyncTask<String, Void, List<CardMapping>> {
+        private MappingsDao mAsyncTaskDao;
+
+        findGameMappingsAsyncTask(MappingsDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<CardMapping> doInBackground(final String... params){
+
+            return mAsyncTaskDao.findStaticByGame(params[0]);
+        }
     }
 }

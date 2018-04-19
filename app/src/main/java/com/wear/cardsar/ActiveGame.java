@@ -15,43 +15,41 @@ public class ActiveGame extends Thread {
     private boolean runAlgorithm;
     private boolean killed;
     private DetectionAlgorithm da;
-    private CameraView mCameraAPI;
-    private Game mGame;
+    private CameraView mCameraView;
 
     private PlayingCardMappings mMappings;
 
-    public ActiveGame(CameraView cameraApi, Game game, AppRepository repository){
+    public ActiveGame(CameraView cameraView, PlayingCardMappings mappings){
         super();
 
         runAlgorithm = false;
         killed = false;
 
         da = new DetectionAlgorithm();
-        mCameraAPI = cameraApi;
+        mCameraView = cameraView;
 
-        mGame = game;
-
-        mMappings = new PlayingCardMappings(game, repository);
-
-        System.out.println("ActiveGame received " + game.getGameName());
+        mMappings = mappings;
     }
 
     @Override
     public void run() {
         while (!killed) {
+
             if (runAlgorithm) {
                 Mat inputFrame = new Mat();
                 Mat outputFrame = new Mat();
-                if (mCameraAPI.getLastInput(inputFrame)){
+                if (mCameraView.getLastInput(inputFrame)){
 
                     da.processInput(inputFrame, outputFrame);
 
-                    mCameraAPI.setOutputFrame(outputFrame);
+                    mCameraView.setOutputFrame(outputFrame);
+                    inputFrame.release();
+                    outputFrame.release();
                 }
 
-                inputFrame.release();
-                outputFrame.release();
+
             }
+
         }
     }
 

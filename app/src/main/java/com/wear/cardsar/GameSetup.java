@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 public class GameSetup extends AppCompatActivity {
 
     private Game mGame;
@@ -38,7 +40,14 @@ public class GameSetup extends AppCompatActivity {
         gameNameTextView.setText(mGame.getGameName());
 
         TextView gameDescTextView = (TextView) findViewById(R.id.gameDesc);
-        gameDescTextView.setText(mGame.getDescription()); // TO-DO: Get description from mGame
+        gameDescTextView.setText(mGame.getDescription());
+
+        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
+        mappings.printMappings();
+        String removalInstructions = buildDeckInstructions(mappings);
+
+        TextView instructionView = findViewById(R.id.gameInstructions);
+        instructionView.setText(removalInstructions);
 
         Button readyB = (Button)findViewById(R.id.readyButton);
 
@@ -61,9 +70,6 @@ public class GameSetup extends AppCompatActivity {
             }
         });
 
-        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
-        String removalInstructions = buildDeckInstructions(mappings);
-
         Log.d("Removal instructions", removalInstructions);
 
         Log.d("Total cards in deck", String.valueOf(mappings.getnPlayingCards()));
@@ -79,18 +85,27 @@ public class GameSetup extends AppCompatActivity {
         instructionBuilder.append(nDecks);
         instructionBuilder.append(" deck");
         if (nDecks > 1){
-            instructionBuilder.append("s");
+            instructionBuilder.append('s');
+        }
+        instructionBuilder.append('\n');
+
+        List<Integer> unusedSuits = mappings.listUnusedSuits();
+
+        for (Integer suit : unusedSuits){
+            instructionBuilder.append("Remove all ");
+            instructionBuilder.append(PlayingCardMappings.getSuitName(suit));
+            instructionBuilder.append('\n');
         }
 
         for (Pair<Integer, Integer> unusedCard : mappings.listUnusedCards()){
+            // if this card's suit is totally unused, go to next
+            if (unusedSuits.contains(unusedCard.first / 13)) continue;
+
             instructionBuilder.append("Remove ");
             instructionBuilder.append(unusedCard.second);
             instructionBuilder.append(" ");
             instructionBuilder.append(PlayingCardMappings.getPlayingCardName(unusedCard.first));
-            if (unusedCard.second > 1) {
-                instructionBuilder.append("s");
-            }
-            instructionBuilder.append("\n");
+            instructionBuilder.append('\n');
         }
 
         return instructionBuilder.toString();

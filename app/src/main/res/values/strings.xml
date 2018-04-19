@@ -1,16 +1,20 @@
 <resources>
     <string name="app_name">CardsAR</string>
 
+    <string name="title_activity_add_game">Create Game</string>
+    <string name="title_activity_setup">Setup</string>
+    <string name="title_activity_camera">Camera</string>
+    <string name="title_activity_add_mapping">Card Mappings</string>
+    <string name="title_activity_specify_mapping">Create Mapping</string>
+    <string name="title_activity_main">Game Library</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_add_game">AddGameActivity</string>
-    <string name="title_activity_setup">SetupActivity</string>
     <string name="my_game">My Game</string>
-    <string name="title_activity_mapping">MappingActivity</string>
 
-    <string name="title_activity_camera">Camera</string>
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="take_picture">Pause camera</string>
@@ -26,7 +30,6 @@
     <string name="edit_game_btn_txt">Edit</string>
     <string name="play_game_btn_txt">Play</string>
     <string name="delete_game_btn_txt">Delete</string>
-    <string name="title_activity_add_mapping">AddMapping</string>
 
     <string name="hint_mapping_name">Name</string>
     <string name="hint_mapping_description">Description</string>
