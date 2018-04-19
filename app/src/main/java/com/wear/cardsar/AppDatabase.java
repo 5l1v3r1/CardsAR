@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Game.class, CardMapping.class}, version = 7)
+@Database(entities = {Game.class, CardMapping.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

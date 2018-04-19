@@ -1,13 +1,19 @@
 package com.wear.cardsar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -15,6 +21,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
 
     class MappingViewHolder extends RecyclerView.ViewHolder {
         private final TextView mappingItemView;
+        private final ImageView mappingImage;
         private final TextView quantityView;
         private CardMapping mMapping;
 
@@ -22,9 +29,12 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
             super(itemView);
 
             mappingItemView = itemView.findViewById(R.id.mappingTextView);
+            mappingImage = itemView.findViewById(R.id.iv);
             quantityView = itemView.findViewById(R.id.intView);
 
             Button deleteButton = itemView.findViewById(R.id.delete_button);
+
+
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -58,6 +68,20 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
+            Bitmap bitmap = null;
+            String mUri = current.getMappingUri();
+            try {
+                if(mUri != null) {
+                    bitmap = MediaStore.Images.Media.getBitmap(mModel.getApplication().getContentResolver(), Uri.parse(mUri));
+                    holder.mappingImage.setImageBitmap(bitmap);
+                }else{ holder.mappingImage.setImageBitmap(null); }
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             holder.quantityView.setText("(x" + current.getQuantity() + ")");
             holder.setMapping(current);
         } else {

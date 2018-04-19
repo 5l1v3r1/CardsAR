@@ -1,8 +1,11 @@
 package com.wear.cardsar;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,7 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class SpecifyNewMapping extends AppCompatActivity {
@@ -22,6 +29,8 @@ public class SpecifyNewMapping extends AppCompatActivity {
     public static final String EXTRA_REPLY_MAPPING_NAME = "com.example.android.wordlistsql.NAME";
     public static final String EXTRA_REPLY_MAPPING_DESCRIPTION = "com.example.android.wordlistsql.DESCRIPTION";
     public static final String EXTRA_REPLY_MAPPING_QUANTITY = "com.example.android.wordlistsql.QUANTITY";
+    public static final String EXTRA_REPLY_MAPPING_URI = "com.example.android.wordlistsql.URI";
+
     public static final int GET_FROM_GALLERY = 3;
 
     private static final String TAG = "SNewMappingActivity";
@@ -29,6 +38,7 @@ public class SpecifyNewMapping extends AppCompatActivity {
     private EditText mEditMappingNameTextView;
     private EditText mEditmappingDescriptionTextView;
     private EditText mEditmappingQuatityTextView;
+    private Uri selectedImage;
 
     Bitmap bitmap = null;
 
@@ -44,7 +54,7 @@ public class SpecifyNewMapping extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+                startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
             }
 
         });
@@ -67,14 +77,17 @@ public class SpecifyNewMapping extends AppCompatActivity {
                     String mappingName = mEditMappingNameTextView.getText().toString();
                     String mappingDescription = mEditmappingDescriptionTextView.getText().toString();
                     String mappingQuantity = mEditmappingQuatityTextView.getText().toString();
+                    String mappingUri = null;
+                    if(selectedImage != null) {
+                        mappingUri = selectedImage.toString();
+                    }
 
                     // extra intent stuff
                     replyIntent.putExtra(EXTRA_REPLY_MAPPING_NAME, mappingName);
                     replyIntent.putExtra(EXTRA_REPLY_MAPPING_DESCRIPTION, mappingDescription);
                     replyIntent.putExtra(EXTRA_REPLY_MAPPING_QUANTITY, mappingQuantity);
                     if( bitmap != null) {
-                        //user specified an img
-                        replyIntent.putExtra("data", bitmap);
+                        replyIntent.putExtra(EXTRA_REPLY_MAPPING_URI, mappingUri);
                         replyIntent.putExtra("pic", "true");
                     }else { // no img
                         replyIntent.putExtra("pic", "false");
@@ -94,11 +107,12 @@ public class SpecifyNewMapping extends AppCompatActivity {
 
         //Detects request codes for img
         if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
+            //to display image
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageView iv = (ImageView) findViewById(R.id.iv);
-                //iv.setImageBitmap(bitmap);
+                iv.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -110,3 +124,4 @@ public class SpecifyNewMapping extends AppCompatActivity {
         }
     }
 }
+

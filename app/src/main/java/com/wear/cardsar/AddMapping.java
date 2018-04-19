@@ -4,7 +4,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class AddMapping extends AppCompatActivity {
@@ -75,18 +82,18 @@ public class AddMapping extends AppCompatActivity {
 
         if (requestCode == NEW_MAPPING_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             int quantity = Integer.parseInt(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_QUANTITY));
-            if(data.getStringExtra("pic") == "true"){
-                Log.v(TAG, "Got bitmap");
-                Bitmap btm = data.getParcelableExtra("data");
-                ImageView iv = (ImageView) findViewById(R.id.iv);
-                iv.setImageBitmap(btm);
+            String mUri= null;
+            if(data.getStringExtra("pic").equals("true")){
+                //Uri mUri = Uri.parse(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_URI));
+                mUri = data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_URI);
+
             }else {
                 Log.v(TAG, "no bitmap");
             }
 
             CardMapping mapping = new CardMapping(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_NAME), gameName
                     , data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_DESCRIPTION)
-                    , quantity);
+                    , quantity, mUri);
             mMappingViewModel.insert(mapping);
         } else {
             Toast.makeText(
@@ -95,4 +102,5 @@ public class AddMapping extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
+
 }
