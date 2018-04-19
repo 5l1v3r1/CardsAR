@@ -30,6 +30,8 @@ public class SpecifyNewMapping extends AppCompatActivity {
     private EditText mEditmappingDescriptionTextView;
     private EditText mEditmappingQuatityTextView;
 
+    Bitmap bitmap = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +45,11 @@ public class SpecifyNewMapping extends AppCompatActivity {
 
             public void onClick(View view) {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
-
             }
 
         });
 
-        final ImageView iv = (ImageView) findViewById(R.id.iv);
+        //final ImageView iv = (ImageView) findViewById(R.id.iv);
 
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(new View.OnClickListener() {
@@ -62,19 +63,25 @@ public class SpecifyNewMapping extends AppCompatActivity {
                     //TODO: make toast that lets user know what went wrong
 
                 } else {
+                    //vars to pass
                     String mappingName = mEditMappingNameTextView.getText().toString();
                     String mappingDescription = mEditmappingDescriptionTextView.getText().toString();
                     String mappingQuantity = mEditmappingQuatityTextView.getText().toString();
+
+                    // extra intent stuff
                     replyIntent.putExtra(EXTRA_REPLY_MAPPING_NAME, mappingName);
                     replyIntent.putExtra(EXTRA_REPLY_MAPPING_DESCRIPTION, mappingDescription);
                     replyIntent.putExtra(EXTRA_REPLY_MAPPING_QUANTITY, mappingQuantity);
+                    if( bitmap != null) {
+                        //user specified an img
+                        replyIntent.putExtra("data", bitmap);
+                        replyIntent.putExtra("pic", "true");
+                    }else { // no img
+                        replyIntent.putExtra("pic", "false");
+                    }
 
+                    //send result
                     setResult(RESULT_OK, replyIntent);
-                    Log.v(TAG, "name:");
-                    Log.v(TAG, mappingName);
-                    Log.v(TAG, mappingDescription);
-                    Log.v(TAG, "" +  mappingQuantity);
-
                 }
                 finish();
             }
@@ -85,15 +92,13 @@ public class SpecifyNewMapping extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-        //Detects request codes
+        //Detects request codes for img
         if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
-            Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 ImageView iv = (ImageView) findViewById(R.id.iv);
-                iv.setImageBitmap(bitmap);
+                //iv.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
