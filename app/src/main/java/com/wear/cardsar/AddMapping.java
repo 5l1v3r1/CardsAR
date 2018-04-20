@@ -42,7 +42,9 @@ public class AddMapping extends AppCompatActivity {
         setContentView(R.layout.activity_add_mapping);
 
         // starts addGame activity on click
-        Button addButton = findViewById(R.id.addButton);
+
+        FloatingActionButton addButton = findViewById(R.id.addButton);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
