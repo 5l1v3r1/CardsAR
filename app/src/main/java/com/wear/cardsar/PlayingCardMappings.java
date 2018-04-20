@@ -16,7 +16,9 @@ import static android.os.SystemClock.sleep;
  */
 
 public class PlayingCardMappings {
+    // array indexes are playing card IDs, elements are custom card mappings those go to
     private final CardMapping[] mPlayingCards = new CardMapping[52];
+    // array indexes are playing card IDs, elements are the number of unused playing cards of that type
     private final int[] mUnusedPlayingCards = new int[52];
     private int nPlayingCards;
     private int nUniqueCards;
@@ -41,7 +43,56 @@ public class PlayingCardMappings {
     }
 
     public PlayingCardMappings(Game game, AppRepository repository){
-        mapToPlayingCards(game, repository);
+        List<CardMapping> mappings = loadMappings(game, repository);
+
+        countCards(mappings);
+
+        // estimate number of decks needed
+        nDecks = (nPlayingCards / 52) + 1;
+
+        // attempt to assign playing cards
+        // loop until no out-of-bounds exceptions,
+        // incrementing the number of decks each time
+        boolean exception;
+        do {
+            exception = false;
+            try {
+                int currentPCard = 0;
+                for (CardMapping mapping : mappings) {
+                    int cardsToAlloc = mapping.getQuantity();
+                    while (cardsToAlloc > 0) {
+                        mPlayingCards[currentPCard] = mapping;
+                        currentPCard++;
+
+                        // There are <nDeck> copies of each playing card
+                        // Assigning a playing card to a custom card really assigns
+                        // <nDeck> playing cards to a custom card
+                        cardsToAlloc -= nDecks;
+                    }
+
+                    // Each unique card is mapped to a playing card
+                    // If there are multiple decks, the custom card might not have
+                    // a quantity high enough to use all of the playing cards it was
+                    // assigned across all decks
+                    // Some of these cards are unused
+                    if (cardsToAlloc < 0) {
+                        mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
+                    }
+                }
+
+                // Remove totally unused cards
+                for (int i = 0; i < 52; i++) {
+                    if (mPlayingCards[i] == null) {
+                        mUnusedPlayingCards[i] = nDecks;
+                    }
+                }
+
+            }catch(IndexOutOfBoundsException e){
+                nDecks++;
+                exception = true;
+            }
+
+        }while(exception);
     }
 
     public int getnPlayingCards(){
@@ -137,52 +188,6 @@ public class PlayingCardMappings {
 
         Log.d("nUniqueCards", String.valueOf(nUniqueCards));
         Log.d("nPlayingCards", String.valueOf(nPlayingCards));
-    }
-
-
-    private void mapToPlayingCards(Game game, AppRepository repository){
-        List<CardMapping> mappings = loadMappings(game, repository);
-
-        countCards(mappings);
-
-        nDecks = (nPlayingCards / 52) + 1;
-
-        boolean exception;
-        do {
-            exception = false;
-            try {
-                int currentPCard = 0;
-                for (CardMapping mapping : mappings) {
-                    int cardsToAlloc = mapping.getQuantity();
-                    while (cardsToAlloc > 0) {
-                        mPlayingCards[currentPCard] = mapping;
-                        currentPCard++;
-
-                        // after mapping to a
-                        cardsToAlloc -= nDecks;
-                    }
-
-                    // Each unique card is mapped to a playing card
-                    // If there are multiple decks, and not enough of unique mapping,
-                    // extra cards from other decks must be removed
-                    if (cardsToAlloc < 0) {
-                        mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
-                    }
-                }
-
-                // Remove totally unused cards
-                for (int i = 0; i < 52; i++) {
-                    if (mPlayingCards[i] == null) {
-                        mUnusedPlayingCards[i] = nDecks;
-                    }
-                }
-
-            }catch(IndexOutOfBoundsException e){
-                nDecks++;
-                exception = true;
-            }
-
-        }while(exception);
     }
 
 

@@ -63,41 +63,32 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         setContentView(R.layout.activity_camera_view);
 
+        // initialize actual camera frame view
         mOpenCvCameraView = findViewById(R.id.texture);
-
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
-
         mOpenCvCameraView.setCvCameraViewListener(this);
 
         Intent intent = getIntent();
 
         AppRepository repo = new AppRepository(getApplication());
         Game game = repo.findGameByName(intent.getStringExtra(GameListAdapter.MESSAGE_GAME_NAME));
-
-        getSupportActionBar().setTitle(game.getGameName());
-
         PlayingCardMappings pcm = new PlayingCardMappings(game, repo);
-        mActiveGame = new ActiveGame(this, pcm);
-        mActiveGame.start();
-        mActiveGame.pauseWork();
 
+        // initialize multithreading constructs
         lastInputFrameLock = new ReentrantLock();
         outputFrameLock = new ReentrantLock();
+
+        mActiveGame = new ActiveGame(this, pcm);
+        mActiveGame.start();
+
+        // Populate UI
+        getSupportActionBar().setTitle(game.getGameName());
 
         final Button feedToggleButton = findViewById(R.id.btn_togglelivefeed);
         feedToggleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 framePaused = !framePaused;
-
-                /*
-                if (framePaused){
-                    mActiveGame.resumeWork();
-
-                }else{
-                    mActiveGame.pauseWork();
-                }
-                */
             }
         });
 
@@ -130,6 +121,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
     public void onDestroy() {
         super.onDestroy();
 
+        // end card detection thread when this activity is destroyed
         mActiveGame.kill();
         try {
             mActiveGame.join();
@@ -210,6 +202,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
         return true;
     }
 
+    // Called every frame, returns the frame to be displayed
     @Override
     public Mat onCameraFrame(Mat inputMat) {
 

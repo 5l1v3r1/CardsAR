@@ -21,13 +21,11 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * This class is an implementation of the Bridge View between OpenCV and Java Camera.
- * This class relays on the functionality available in base class and only implements
- * required functions:
- * connectCamera - opens Java camera and sets the PreviewCallback to be delivered.
- * disconnectCamera - closes the camera and stops preview.
- * When frame is delivered via callback from Camera - it processed via OpenCV to be
- * converted to RGBA32 and then passed to the external callback for modifications if required.
+ * This class is a re-implementation of JavaCameraView
+ * JavaCameraView is landscape-only, this is portrait-only
+ * Most code here is copied directly from JavaCameraView
+ * Extending JavaCameraView was unfortunately not an option, as the few
+ * members which needed to change were private and could not be accessed.
  */
 public class PortraitCameraView extends CameraBridgeViewBase implements PreviewCallback {
 
@@ -183,6 +181,7 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
                     params = mCamera.getParameters();
 
                     // Intentionally swap width and height to force portrait view
+                    // This alone accomplishes almost all of the portrait functionality
                     mFrameWidth = params.getPreviewSize().height;
                     mFrameHeight = params.getPreviewSize().width;
 
@@ -212,6 +211,7 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
                     AllocateCache();
 
                     mCameraFrame = new PortraitCameraFrame[2];
+                    // width and height intentionally swapped again to take raw input from camera
                     mCameraFrame[0] = new PortraitCameraFrame(mFrameChain[0], mFrameHeight, mFrameWidth);
                     mCameraFrame[1] = new PortraitCameraFrame(mFrameChain[1], mFrameHeight, mFrameWidth);
 
@@ -316,16 +316,6 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
             Log.d(TAG, "Preview Frame received. Frame size: " + frame.length);
         synchronized (this) {
 
-
-            if (false) {
-                Mat rotateMat = new Mat(mFrameWidth + (mFrameWidth / 2), mFrameHeight, CvType.CV_8UC1);
-                rotateMat.put(0, 0, frame);
-                Log.d(TAG, "Mat from byte array size: " + rotateMat.toString());
-                Core.flip(rotateMat.t(), mFrameChain[mChainIdx], 1);
-                Log.d(TAG, "Rotated mat: " + mFrameChain[mChainIdx].toString());
-                rotateMat.release();
-            }
-
             mFrameChain[mChainIdx].put(0, 0, frame);
             mCameraFrameReady = true;
             this.notify();
@@ -334,6 +324,7 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
             mCamera.addCallbackBuffer(mBuffer);
     }
 
+    // Rotates a mat ninety degrees, clockwise or counterclockwise
     private static void rotateNinety(Mat frame, boolean clockwise){
         Size originalSize = frame.size();
 
@@ -365,6 +356,7 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
             else
                 throw new IllegalArgumentException("Preview Format can be NV21 or YV12");
 
+            // last thing needed to implement portrait view
             rotateNinety(mRgba, true);
             return mRgba;
         }
@@ -411,8 +403,10 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
                 }
 
                 if (!mStopThread && hasFrame) {
-                    if (!mFrameChain[1 - mChainIdx].empty())
+                    if (!mFrameChain[1 - mChainIdx].empty()) {
+                        // eventually calls onCameraFrame in CameraView.java
                         deliverAndDrawFrame(mCameraFrame[1 - mChainIdx]);
+                    }
                 }
             } while (!mStopThread);
             Log.d(TAG, "Finish processing thread");

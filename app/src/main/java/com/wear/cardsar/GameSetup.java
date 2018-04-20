@@ -32,6 +32,9 @@ public class GameSetup extends AppCompatActivity {
 
         AppRepository repo = new AppRepository(getApplication());
         mGame = repo.findGameByName(gameName);
+        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
+
+        // Populate UI elements
 
         TextView gameNameTextView = findViewById(R.id.gameName);
         gameNameTextView.setText(mGame.getGameName());
@@ -39,10 +42,7 @@ public class GameSetup extends AppCompatActivity {
         TextView gameDescTextView = findViewById(R.id.gameDesc);
         gameDescTextView.setText(mGame.getDescription());
 
-        PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
-        mappings.printMappings();
         String removalInstructions = buildDeckInstructions(mappings);
-
         TextView instructionView = findViewById(R.id.gameInstructions);
         instructionView.setText(removalInstructions);
 
@@ -77,10 +77,6 @@ public class GameSetup extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
-
-        Log.d("Removal instructions", removalInstructions);
-
-        Log.d("Total cards in deck", String.valueOf(mappings.getnPlayingCards()));
     }
 
     private String buildDeckInstructions(PlayingCardMappings mappings){
@@ -99,12 +95,14 @@ public class GameSetup extends AppCompatActivity {
 
         List<Integer> unusedSuits = mappings.listUnusedSuits();
 
+        // List all totally unused suits to user
         for (Integer suit : unusedSuits){
             instructionBuilder.append("Remove all ");
             instructionBuilder.append(PlayingCardMappings.getSuitName(suit));
             instructionBuilder.append('\n');
         }
 
+        // List all unused cards that are not included in unused suits
         for (Pair<Integer, Integer> unusedCard : mappings.listUnusedCards()){
             // if this card's suit is totally unused, go to next
             if (unusedSuits.contains(unusedCard.first / 13)) continue;
