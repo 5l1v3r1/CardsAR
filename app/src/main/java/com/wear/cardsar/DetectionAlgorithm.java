@@ -1,13 +1,5 @@
 package com.wear.cardsar;
 
-
-import android.graphics.BlurMaskFilter;
-import android.graphics.Color;
-
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.KeyPoint;
 import org.opencv.core.Mat;
@@ -22,14 +14,8 @@ import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Arrays;
 import java.util.List;
-
-/**
- * Created by larsoe4 on 3/21/2018.
- */
 
 public class DetectionAlgorithm{
 
@@ -63,7 +49,9 @@ public class DetectionAlgorithm{
         Imgproc.Canny(edges, edges, 80, 100);
 
 
+
         /*
+
         Size s=new Size();
         s.height=5;
         s.width=5;
@@ -71,7 +59,6 @@ public class DetectionAlgorithm{
         Imgproc.GaussianBlur(gray,blur,s,0);
 
         //blur.copyTo(output);
-
 
         int w = input.width();
         int h = input.height();

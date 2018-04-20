@@ -5,18 +5,17 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-/**
- * Created by Carlos on 3/28/2018.
- */
-
+//Db card entity
 @Entity(tableName = "game")
 public class Game {
 
+    //constructor
     public Game(@NonNull String gameName, String description) {
         this.gameName= gameName;
         this.description = description;
     }
 
+    // all tables col per card mapping
     @PrimaryKey(autoGenerate = true)
     private int gid;
 

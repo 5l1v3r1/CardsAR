@@ -6,7 +6,6 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,12 +18,13 @@ import android.widget.Button;
 
 import java.util.concurrent.locks.*;
 
+//
 public class CameraView extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     private static final String TAG = "OCVSample::Activity";
 
     private PortraitCameraView mOpenCvCameraView;
-    private boolean mIsJavaCamera = true;
-    private MenuItem mItemSwitchCamera = null;
+    //private boolean mIsJavaCamera = true;
+    //private MenuItem mItemSwitchCamera = null;
 
     private boolean framePaused = false;
     private Mat lastInputFrame = null;
@@ -63,7 +63,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         setContentView(R.layout.activity_camera_view);
 
-        mOpenCvCameraView = (PortraitCameraView) findViewById(R.id.texture);
+        mOpenCvCameraView = findViewById(R.id.texture);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 

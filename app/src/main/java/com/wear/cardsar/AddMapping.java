@@ -3,11 +3,7 @@ package com.wear.cardsar;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,28 +12,30 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 public class AddMapping extends AppCompatActivity {
 
+    //Private vars
     private MappingViewModel mMappingViewModel;
-    public static final int NEW_MAPPING_ACTIVITY_REQUEST_CODE = 1;
     private static final String TAG = "AddMappingActivity";
     private static String gameName;
 
+    //Public vars
+    public static final int NEW_MAPPING_ACTIVITY_REQUEST_CODE = 1;
+
+    //Function initializes activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mapping);
 
-        Button addButton = findViewById(R.id.addButton);
+        // starts addGame activity on click
+
+        FloatingActionButton addButton = findViewById(R.id.addButton);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,17 +45,21 @@ public class AddMapping extends AppCompatActivity {
             }
         });
 
+
         gameName = getIntent().getStringExtra(GameListAdapter.MESSAGE_GAME_NAME);
-        Log.v(TAG, "game name: " + gameName);
+        //Log.v(TAG, "game name: " + gameName);
+
+        //app bar name
         getSupportActionBar().setTitle(gameName);
 
+        // init model
         mMappingViewModel = ViewModelProviders.of(this).get(MappingViewModel.class);
 
+        // gets and list all games in UI
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final MappingsListAdapter adapter = new MappingsListAdapter(this, mMappingViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         mMappingViewModel.getAllMappings(gameName).observe(this, new Observer<List<CardMapping>>() {
             @Override
             public void onChanged(@Nullable final List<CardMapping> words) {
@@ -66,6 +68,7 @@ public class AddMapping extends AppCompatActivity {
             }
         });
 
+        // inits back button
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +80,11 @@ public class AddMapping extends AppCompatActivity {
         });
     }
 
+    //function handles all activity results sent to activity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // handles addGame activity result (both success and fail)
         if (requestCode == NEW_MAPPING_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             int quantity = Integer.parseInt(data.getStringExtra(SpecifyNewMapping.EXTRA_REPLY_MAPPING_QUANTITY));
             String mUri= null;

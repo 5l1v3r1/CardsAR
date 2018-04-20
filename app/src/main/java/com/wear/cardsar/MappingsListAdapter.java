@@ -16,9 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-
+// MappingListAdapter will use a recyclable xml to display all the items in a list of game mappings
 public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapter.MappingViewHolder> {
 
+    // class used as the holder for one mapping
     class MappingViewHolder extends RecyclerView.ViewHolder {
         private final TextView mappingItemView;
         private final ImageView mappingImage;
@@ -57,18 +58,20 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         mModel = model;
     }
 
+    //sets up object internals when the app starts
     @Override
     public MappingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.recyclerview_mapping_item, parent, false);
         return new MappingViewHolder(itemView);
     }
 
+    // funcition assigns text, buttons and images correct image per item listed
     @Override
     public void onBindViewHolder(MappingViewHolder holder, int position) {
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String mUri = current.getMappingUri();
             try {
                 if(mUri != null) {
@@ -90,6 +93,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         }
     }
 
+    //function updated the mappings displays and notifies UI of changes
     void setmMappings(List<CardMapping> mappings){
         mMappings = mappings;
         notifyDataSetChanged();

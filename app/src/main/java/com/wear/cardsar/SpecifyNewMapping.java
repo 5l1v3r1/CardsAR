@@ -1,11 +1,8 @@
 package com.wear.cardsar;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,12 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class SpecifyNewMapping extends AppCompatActivity {
@@ -111,7 +103,7 @@ public class SpecifyNewMapping extends AppCompatActivity {
             //to display image
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                ImageView iv = (ImageView) findViewById(R.id.iv);
+                ImageView iv = findViewById(R.id.iv);
                 iv.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block

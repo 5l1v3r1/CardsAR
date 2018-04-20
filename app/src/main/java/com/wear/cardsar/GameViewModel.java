@@ -6,26 +6,27 @@ import android.arch.lifecycle.LiveData;
 
 import java.util.List;
 
-/**
- * Created by Carlos on 3/28/2018.
- */
-
+//holds all the Games information. also handles fetching information from the database
 public class GameViewModel extends AndroidViewModel {
 
+    //private vars
     private AppRepository mRepository;
-
     private LiveData<List<Game>> mAllGames;
 
+    //constructor
     public GameViewModel (Application application) {
         super(application);
         mRepository = new AppRepository(application);
         mAllGames = mRepository.getAllGames();
     }
 
+    //returns all games in db
     LiveData<List<Game>> getAllGames() { return mAllGames; }
 
+    //inserts a game to the db
     public void insert(Game game) { mRepository.insertGame(game); }
 
+    //
     public void delete(Game game) {mRepository.deleteGame(game);}
 
     public int getnMappings(Game game) {

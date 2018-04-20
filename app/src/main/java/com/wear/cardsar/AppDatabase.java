@@ -9,14 +9,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+// ROOM database has the database creation functions and db populating functions
 @Database(entities = {Game.class, CardMapping.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase {
 
+    // private vars
     private static AppDatabase INSTANCE;
 
+    // publi vars
     public abstract GameDao gameDao();
     public abstract MappingsDao mappingDao();
 
+    //executes when there is a change in the db
     private static AppDatabase.Callback sAppDatabaseCallback =
             new AppDatabase.Callback(){
 
@@ -27,7 +31,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 }
             };
 
-    public static AppDatabase getAppDatabase(Context context) {
+    //start db instance
+    static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "game-database")
@@ -40,10 +45,12 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    // del db instance
     public static void destroyInstance() {
         INSTANCE = null;
     }
 
+    //populates db
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
         private final GameDao mDao;

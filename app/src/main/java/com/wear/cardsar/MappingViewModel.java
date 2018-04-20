@@ -7,13 +7,10 @@ import android.util.Log;
 
 import java.util.List;
 
-/**
- * Created by Carlos on 4/14/2018.
- */
+
 public class MappingViewModel extends AndroidViewModel {
 
     private AppRepository mRepository;
-    private Application app;
 
     private LiveData<List<CardMapping>> mAllMappings;
 
@@ -21,7 +18,6 @@ public class MappingViewModel extends AndroidViewModel {
         super(application);
         mRepository = new AppRepository(application);
         mAllMappings = null;
-        this.app = application;
     }
 
     LiveData<List<CardMapping>> getAllMappings(String gameName) {

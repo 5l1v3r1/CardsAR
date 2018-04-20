@@ -12,22 +12,28 @@ import android.widget.TextView;
 
 import java.util.List;
 
+// GameListAdapter will use a recyclable xml to display all the items in a list of games
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameViewHolder> {
 
+    //public vars
     public static final String MESSAGE_GAME_NAME = "com.wear.cardsar.mapping";
 
+    // class used as the holder for one game
     class GameViewHolder extends RecyclerView.ViewHolder {
         private final TextView GameItemView;
         private final TextView GameDescriptionView;
         private final TextView GameCardQuantityView;
         private Game mGame;
 
+        //constructor
         private GameViewHolder(final View itemView) {
             super(itemView);
+            //finds all the fields to display things in xml
             GameItemView = itemView.findViewById(R.id.textView);
             GameDescriptionView = itemView.findViewById(R.id.descView);
             GameCardQuantityView = itemView.findViewById(R.id.intView);
 
+            // button on clicks routes to play game activity
             Button playButton = itemView.findViewById(R.id.play_game_button);
             playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -44,6 +50,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 }
             });
 
+            //button on click routes to edit edit game mappings activity
             Button editButton = itemView.findViewById(R.id.edit_game_button);
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,6 +67,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
                 }
             });
 
+            //button on click deletes a game
             Button deleteButton = itemView.findViewById(R.id.delete_game_button);
             deleteButton.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -71,20 +79,22 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
 
         }
 
+        //current games info
         public void setGame(Game game){
             mGame = game;
         }
     }
 
+    //private class variables
     private final LayoutInflater mInflater;
     private List<Game> mGames; // Cached copy of words
     private GameViewModel mModel;
 
+    //places all game item in view
     GameListAdapter(Context context, GameViewModel model) {
         mInflater = LayoutInflater.from(context);
         mModel = model;
     }
-
 
     @Override
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

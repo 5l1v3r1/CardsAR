@@ -1,27 +1,22 @@
 package com.wear.cardsar;
 
 import android.app.Application;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AppRepository implements LifecycleOwner{
+//Abstracts all the calls to the
+public class AppRepository {
 
+    //Private vars
     private GameDao mGameDao;
     private MappingsDao mappingsDao;
     private LiveData<List<Game>> mAllGames;
-    private LiveData<List<CardMapping>> mGameCardMappings;
-    private Lifecycle lifecycle = null;
 
+    //constructor
     AppRepository(Application application) {
         AppDatabase db = AppDatabase.getAppDatabase(application);
         mGameDao = db.gameDao();
@@ -29,46 +24,25 @@ public class AppRepository implements LifecycleOwner{
         mAllGames = mGameDao.getAll();
     }
 
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-
-        if (lifecycle == null){
-            lifecycle = new Lifecycle() {
-                @Override
-                public void addObserver(@NonNull LifecycleObserver observer) {
-
-                }
-
-                @Override
-                public void removeObserver(@NonNull LifecycleObserver observer) {
-
-                }
-
-                @NonNull
-                @Override
-                public State getCurrentState() {
-                    return State.RESUMED;
-                }
-            };
-        }
-        return lifecycle;
-    }
-
+    //return all games in db
     LiveData<List<Game>> getAllGames() {
         return mAllGames;
     }
 
+    //returns all mappings for a game
     LiveData<List<CardMapping>> getMappings(String gameName) { return mappingsDao.findByGame(gameName);
     }
 
-    public  void  insertMapping (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
+    //insert a mapping to the db
+    void insertMapping (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
 
-    public void insertGame (Game game) {
+    //insert a game to the db
+    void insertGame (Game game) {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
-    public void deleteGame (Game game) {
+    //delete a game from the game
+    void deleteGame (Game game) {
         //Delete all mappings for a game
         new deleteGameMappingsAsyncTask(mappingsDao).execute(game.getGameName());
 
@@ -76,9 +50,11 @@ public class AppRepository implements LifecycleOwner{
         new deleteGameAsyncTask(mGameDao).execute(game);
     }
 
-    public void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
+    // delete mapping from db
+    void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
 
-    public Game findGameByName(String gameName){
+    //returns the game with the specified name
+    Game findGameByName(String gameName){
 
         findGameAsyncTask asyncTask = new findGameAsyncTask(mGameDao);
         asyncTask.execute(gameName);
@@ -97,21 +73,8 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
-    public CardMapping findMappingById(int id){
-
-        findMappingAsyncTask asyncTask = new findMappingAsyncTask(mappingsDao);
-        asyncTask.execute(id);
-
-        try {
-            return asyncTask.get();
-        }catch(Exception e){
-            e.printStackTrace();
-
-            return null;
-        }
-    }
-
-    public List<CardMapping> findStaticMappingsByName(String gameName){
+    //return a static (not live data) list of mappings for a game
+    List<CardMapping> findStaticMappingsByName(String gameName){
 
         findGameMappingsAsyncTask asyncTask = new findGameMappingsAsyncTask(mappingsDao);
         asyncTask.execute(gameName);
@@ -125,6 +88,7 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
+    //insets game to the database in worker thread
     private static class insertAsyncTask extends AsyncTask<Game, Void, Void> {
 
         private GameDao mAsyncTaskDao;
@@ -140,6 +104,7 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
+    //insets mapping to the database in worker thread
     private static class insertMappingAsyncTask extends AsyncTask<CardMapping, Void, Void> {
 
         private MappingsDao mAsyncTaskDao;
@@ -155,6 +120,7 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
+    //delete game in the database in worker thread
     private static class deleteGameAsyncTask extends AsyncTask<Game, Void, Void> {
         private GameDao mAsyncTaskDao;
 
@@ -170,6 +136,7 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
+    //delete mapping in the database in worker thread
     private static class deleteMappingAsyncTask extends AsyncTask<CardMapping, Void, Void> {
         private MappingsDao mAsyncTaskDao;
 
@@ -185,6 +152,7 @@ public class AppRepository implements LifecycleOwner{
         }
     }
 
+    //delete mappings in the database in worker thread
     private static class deleteGameMappingsAsyncTask extends AsyncTask<String, Void, Void> {
         private MappingsDao mAsyncTaskDao;
 
@@ -199,6 +167,8 @@ public class AppRepository implements LifecycleOwner{
             return null;
         }
     }
+
+    //returns game in the database in worker thread
 
     private static class findGameAsyncTask extends AsyncTask<String, Void, Game> {
         private GameDao mAsyncTaskDao;
@@ -216,25 +186,9 @@ public class AppRepository implements LifecycleOwner{
 
             return game;
         }
-
     }
 
-    private static class findMappingAsyncTask extends AsyncTask<Integer, Void, CardMapping> {
-        private MappingsDao mAsyncTaskDao;
-
-        findMappingAsyncTask(MappingsDao dao) {
-
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected CardMapping doInBackground(final Integer... params) {
-
-            return mAsyncTaskDao.findById(params[0]);
-        }
-
-    }
-
+    //returns all game mappings in the database in worker thread
     private static class findGameMappingsAsyncTask extends AsyncTask<String, Void, List<CardMapping>> {
         private MappingsDao mAsyncTaskDao;
 
