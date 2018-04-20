@@ -6,9 +6,11 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+//Db card mapping entity
 @Entity( tableName = "mappings")
 public class CardMapping {
 
+    //constructor
     public CardMapping(@NonNull String mappingName, String game, String mappingDescription, int quantity, String mappingUri) {
         this.mappingName= mappingName;
         this.game = game;
@@ -17,6 +19,7 @@ public class CardMapping {
         this.mappingUri = mappingUri;
     }
 
+    // all tables col per card mapping
     @PrimaryKey(autoGenerate = true)
     private int mid;
 

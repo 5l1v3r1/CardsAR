@@ -6,7 +6,6 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import android.widget.Button;
 
 import java.util.concurrent.locks.*;
 
+//
 public class CameraView extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener {
     private static final String TAG = "OCVSample::Activity";
 
