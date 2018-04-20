@@ -1,6 +1,5 @@
 package com.wear.cardsar;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +8,6 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -36,10 +33,10 @@ public class GameSetup extends AppCompatActivity {
         AppRepository repo = new AppRepository(getApplication());
         mGame = repo.findGameByName(gameName);
 
-        TextView gameNameTextView = (TextView) findViewById(R.id.gameName);
+        TextView gameNameTextView = findViewById(R.id.gameName);
         gameNameTextView.setText(mGame.getGameName());
 
-        TextView gameDescTextView = (TextView) findViewById(R.id.gameDesc);
+        TextView gameDescTextView = findViewById(R.id.gameDesc);
         gameDescTextView.setText(mGame.getDescription());
 
         PlayingCardMappings mappings = new PlayingCardMappings(mGame, repo);
@@ -49,7 +46,7 @@ public class GameSetup extends AppCompatActivity {
         TextView instructionView = findViewById(R.id.gameInstructions);
         instructionView.setText(removalInstructions);
 
-        Button readyB = (Button)findViewById(R.id.readyButton);
+        Button readyB = findViewById(R.id.readyButton);
 
         readyB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +58,7 @@ public class GameSetup extends AppCompatActivity {
             }
         });
 
-        Button cancelB = (Button)findViewById(R.id.cancelButton);
+        Button cancelB = findViewById(R.id.cancelButton);
 
         cancelB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +67,7 @@ public class GameSetup extends AppCompatActivity {
             }
         });
 
-        Button mappingB = (Button) findViewById(R.id.mappingsButton);
+        Button mappingB =  findViewById(R.id.mappingsButton);
 
         mappingB.setOnClickListener(new View.OnClickListener() {
             @Override

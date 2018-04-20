@@ -96,7 +96,6 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
         mModel = model;
     }
 
-
     @Override
     public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);

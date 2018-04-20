@@ -32,7 +32,7 @@ public abstract class AppDatabase extends RoomDatabase {
             };
 
     //start db instance
-    public static AppDatabase getAppDatabase(Context context) {
+    static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "game-database")

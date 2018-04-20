@@ -23,8 +23,8 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
     private static final String TAG = "OCVSample::Activity";
 
     private PortraitCameraView mOpenCvCameraView;
-    private boolean mIsJavaCamera = true;
-    private MenuItem mItemSwitchCamera = null;
+    //private boolean mIsJavaCamera = true;
+    //private MenuItem mItemSwitchCamera = null;
 
     private boolean framePaused = false;
     private Mat lastInputFrame = null;
@@ -63,7 +63,7 @@ public class CameraView extends AppCompatActivity implements CameraBridgeViewBas
 
         setContentView(R.layout.activity_camera_view);
 
-        mOpenCvCameraView = (PortraitCameraView) findViewById(R.id.texture);
+        mOpenCvCameraView = findViewById(R.id.texture);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 

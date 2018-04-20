@@ -71,7 +71,7 @@ public class MappingsListAdapter extends RecyclerView.Adapter<MappingsListAdapte
         if (mMappings != null) {
             CardMapping current = mMappings.get(position);
             holder.mappingItemView.setText(current.getMappingName());
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String mUri = current.getMappingUri();
             try {
                 if(mUri != null) {

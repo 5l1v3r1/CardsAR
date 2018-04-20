@@ -1,7 +1,6 @@
 package com.wear.cardsar;
 
 import android.app.Application;
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -35,15 +34,15 @@ public class AppRepository {
     }
 
     //insert a mapping to the db
-    public  void  insertMapping (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
+    void insertMapping (CardMapping mapping) { new insertMappingAsyncTask(mappingsDao).execute(mapping);}
 
     //insert a game to the db
-    public void insertGame (Game game) {
+    void insertGame (Game game) {
         new insertAsyncTask(mGameDao).execute(game);
     }
 
     //delete a game from the game
-    public void deleteGame (Game game) {
+    void deleteGame (Game game) {
         //Delete all mappings for a game
         new deleteGameMappingsAsyncTask(mappingsDao).execute(game.getGameName());
 
@@ -52,10 +51,10 @@ public class AppRepository {
     }
 
     // delete mapping from db
-    public void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
+    void deleteMapping (CardMapping mapping) { new deleteMappingAsyncTask(mappingsDao).execute(mapping); }
 
     //returns the game with the specified name
-    public Game findGameByName(String gameName){
+    Game findGameByName(String gameName){
 
         findGameAsyncTask asyncTask = new findGameAsyncTask(mGameDao);
         asyncTask.execute(gameName);
@@ -75,7 +74,7 @@ public class AppRepository {
     }
 
     //return a static (not live data) list of mappings for a game
-    public List<CardMapping> findStaticMappingsByName(String gameName){
+    List<CardMapping> findStaticMappingsByName(String gameName){
 
         findGameMappingsAsyncTask asyncTask = new findGameMappingsAsyncTask(mappingsDao);
         asyncTask.execute(gameName);

@@ -1,15 +1,15 @@
 package com.wear.cardsar;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
+
+
+
 import android.util.Log;
 import android.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.os.SystemClock.sleep;
+
 
 /**
  * Created by larsoe4 on 4/18/2018.
