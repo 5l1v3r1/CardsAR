@@ -386,7 +386,7 @@ public class PortraitCameraView extends CameraBridgeViewBase implements PreviewC
         private Mat mRgba;
         private int mWidth;
         private int mHeight;
-    };
+    }
 
     private class CameraWorker implements Runnable {
 
