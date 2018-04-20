@@ -57,13 +57,13 @@ public class DetectionAlgorithm{
         Mat gray = new Mat(input.size(), CvType.CV_8UC1);
         Mat blur = new Mat(input.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(input, gray, Imgproc.COLOR_RGB2GRAY);
-
+        //turn the image to a grayscale img with edges being gray
         Mat edges = new Mat(input.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(input, edges, Imgproc.COLOR_RGB2GRAY, 4);
         Imgproc.Canny(edges, edges, 80, 100);
 
 
-
+        /*
         Size s=new Size();
         s.height=5;
         s.width=5;
@@ -87,14 +87,15 @@ public class DetectionAlgorithm{
         //System.out.println("px: " + buff[0] +"jkjkjkj"+ buff[1]);
         //Mat threshimg = new Mat(input.size(), CvType.CV_8UC1);
         Mat invertcolormatrix= new Mat(blur.rows(),blur.cols(), blur.type(), new Scalar(255,255,255));
-
+        */
         //Core.subtract(invertcolormatrix, blur, blur);
         Mat threshimg = new Mat(input.size(), CvType.CV_8UC1);
 
         //Imgproc.cvtColor(input, threshimg, Imgproc.COLOR_RGB2GRAY, 4);
         //Imgproc.Canny(threshimg, threshimg, 80, 100);
         //Imgproc.adaptiveThreshold(blur, threshimg, 255,Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY,7, 5);
-        Imgproc.threshold(blur, threshimg, threshlevel,255, Imgproc.THRESH_BINARY);
+        //Imgproc.threshold(blur, threshimg, threshlevel,255, Imgproc.THRESH_BINARY);
+        //find all contours and their hierarchy
         edges.copyTo(threshimg);
         Mat hierarchy = new Mat(input.size(), CvType.CV_8UC1);
         java.util.List<org.opencv.core.MatOfPoint> contours = new java.util.ArrayList<org.opencv.core.MatOfPoint>();
@@ -110,13 +111,14 @@ public class DetectionAlgorithm{
         contours = filteredContours;
 
         java.util.List<org.opencv.core.MatOfPoint> srtcontours = new java.util.ArrayList<org.opencv.core.MatOfPoint>();
-        Sortct comparator = new Sortct(contours);
 
+        //create an array to store all the sorted hierarchy and contours
         Mat srthier = new Mat(input.size(), hierarchy.type());
         hierarchy.copyTo(srthier);
         int tb = (int)(hierarchy.total() * hierarchy.channels());
         //System.out.println("w "+hierarchy.height()+"jkjkghghghghghghghj---"+hierarchy.width()+ " ddd " + tb);
-
+        //sort all indexes based on contours size
+        Sortct comparator = new Sortct(contours);
         Integer[] indexes = comparator.createIndexArray();
         Arrays.sort(indexes,comparator);
 
@@ -144,7 +146,9 @@ public class DetectionAlgorithm{
             srthier.get(0,i, buf);
 
             //System.out.println(srtcontours.size()+"jkjkghghghghghghghj---"+tb + " ddd\n");
+            //draw a green box if contours has no parent and has 4 corners
             if (buf[3]==-1 && approx.toArray().length == 4){
+
                 Scalar cl = new Scalar(0,255,0);
                 System.out.println("ddyyd\n");
                 List<MatOfPoint> tmplist = new ArrayList<>();
@@ -156,6 +160,7 @@ public class DetectionAlgorithm{
                 approxf1.release();
             }
             //int pix=edges.get(h100, w2, buff);
+            //check if countour is whin size, has 4 corners and has no parent contour
             if (size<120000 && size>25000 && approx.toArray().length == 4 && buf[3] == -1){
                 cntiscard[i] = 1;
             }
@@ -163,7 +168,7 @@ public class DetectionAlgorithm{
             a.release();
         }
         for (int i = 0; i < srtcontours.size(); i++){
-
+            //draw an extra red box if contours has no parent and has 4 corners
             if (cntiscard[i] == 1){
                 Scalar cl = new Scalar(255,0,0);
 
