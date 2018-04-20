@@ -25,9 +25,9 @@ public class ListPlayingCards extends AppCompatActivity {
 
         AppRepository repo = new AppRepository(getApplication());
         Game game = repo.findGameByName(gameName);
-
         PlayingCardMappings mappings = new PlayingCardMappings(game, repo);
 
+        // Populate UI elements
         TextView mappingsListView = findViewById(R.id.playingCardsList);
 
         StringBuilder builder = new StringBuilder();
