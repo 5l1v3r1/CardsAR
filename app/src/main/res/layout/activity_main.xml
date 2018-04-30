@@ -22,10 +22,16 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
-        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recyclerview_item" />
+        android:background="@android:color/white"
+        android:clipToPadding="false"
+        android:paddingBottom="48dp"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:listitem="@layout/recyclerview_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- android:src="@drawable/ic_add_black_24dp" -->
 

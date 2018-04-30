@@ -101,10 +101,7 @@ public class AddMapping extends AppCompatActivity {
                     , quantity, mUri);
             mMappingViewModel.insert(mapping);
         } else {
-            Toast.makeText(
-                    getApplicationContext(),
-                    R.string.mapping_empty_not_saved,
-                    Toast.LENGTH_LONG).show();
+
         }
     }
 

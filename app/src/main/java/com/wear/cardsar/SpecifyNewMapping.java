@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -60,35 +62,56 @@ public class SpecifyNewMapping extends AppCompatActivity {
                 if (TextUtils.isEmpty(mEditMappingNameTextView.getText())
                         || TextUtils.isEmpty(mEditmappingDescriptionTextView.getText())
                         || TextUtils.isEmpty(mEditmappingQuatityTextView.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
+                    //setResult(RESULT_CANCELED, replyIntent);
                     Log.v(TAG, "No mapping name!");
                     //TODO: make toast that lets user know what went wrong
 
+                    Toast.makeText(
+                            getApplicationContext(),
+                            R.string.mapping_empty_not_saved,
+                            Toast.LENGTH_LONG).show();
+
                 } else {
-                    //vars to pass
-                    String mappingName = mEditMappingNameTextView.getText().toString();
-                    String mappingDescription = mEditmappingDescriptionTextView.getText().toString();
-                    String mappingQuantity = mEditmappingQuatityTextView.getText().toString();
-                    String mappingUri = null;
-                    if(selectedImage != null) {
-                        mappingUri = selectedImage.toString();
+
+                    try {
+                        int tmp = Integer.parseInt(mEditmappingQuatityTextView.getText().toString());
+
+                        //vars to pass
+                        String mappingName = mEditMappingNameTextView.getText().toString();
+                        String mappingDescription = mEditmappingDescriptionTextView.getText().toString();
+                        String mappingQuantity = mEditmappingQuatityTextView.getText().toString();
+                        String mappingUri = null;
+                        if(selectedImage != null) {
+                            mappingUri = selectedImage.toString();
+                        }
+
+                        // extra intent stuff
+                        replyIntent.putExtra(EXTRA_REPLY_MAPPING_NAME, mappingName);
+                        replyIntent.putExtra(EXTRA_REPLY_MAPPING_DESCRIPTION, mappingDescription);
+                        replyIntent.putExtra(EXTRA_REPLY_MAPPING_QUANTITY, mappingQuantity);
+                        if( bitmap != null) {
+                            replyIntent.putExtra(EXTRA_REPLY_MAPPING_URI, mappingUri);
+                            replyIntent.putExtra("pic", "true");
+                        }else { // no img
+                            replyIntent.putExtra("pic", "false");
+                        }
+
+                        //send result
+                        setResult(RESULT_OK, replyIntent);
+
+                        finish();
+
+                    }catch(java.lang.NumberFormatException e){
+                        Toast.makeText(
+                                getApplicationContext(),
+                                R.string.invalid_quantity_not_saved,
+                                Toast.LENGTH_LONG).show();
+                    }catch(Exception e){
+                        e.printStackTrace();
                     }
 
-                    // extra intent stuff
-                    replyIntent.putExtra(EXTRA_REPLY_MAPPING_NAME, mappingName);
-                    replyIntent.putExtra(EXTRA_REPLY_MAPPING_DESCRIPTION, mappingDescription);
-                    replyIntent.putExtra(EXTRA_REPLY_MAPPING_QUANTITY, mappingQuantity);
-                    if( bitmap != null) {
-                        replyIntent.putExtra(EXTRA_REPLY_MAPPING_URI, mappingUri);
-                        replyIntent.putExtra("pic", "true");
-                    }else { // no img
-                        replyIntent.putExtra("pic", "false");
-                    }
-
-                    //send result
-                    setResult(RESULT_OK, replyIntent);
                 }
-                finish();
+
             }
         });
     }

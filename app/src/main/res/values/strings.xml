@@ -4,8 +4,8 @@
     <string name="title_activity_add_game">Create Game</string>
     <string name="title_activity_setup">Setup</string>
     <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_add_mapping">Card Mappings</string>
-    <string name="title_activity_specify_mapping">Create Mapping</string>
+    <string name="title_activity_add_mapping">Cards</string>
+    <string name="title_activity_specify_mapping">Create Card</string>
     <string name="title_activity_main">Game Library</string>
     <string name="title_activity_list_playing_cards">Playing Card Bindings</string>
 
@@ -24,16 +24,21 @@
     <string name="hint_description">Game Description</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Game not saved because it is empty.</string>
-    <string name="mapping_empty_not_saved">Mapping not saved because it is empty.</string>
+    <string name="mapping_empty_not_saved">Card attribute is empty!</string>
+    <string name="invalid_quantity_not_saved">Invalid quantity</string>
 
     <string name="no_game">No game</string>
 
-    <string name="edit_game_btn_txt">Edit</string>
+    <string name="edit_game_btn_txt">Cards</string>
     <string name="play_game_btn_txt">Play</string>
     <string name="delete_game_btn_txt">Delete</string>
 
     <string name="hint_mapping_name">Name</string>
     <string name="hint_mapping_description">Description</string>
     <string name="hint_mapping_quantity">Quantity</string>
+
+    <string name="show_mappings_btn_txt">Playing Cards</string>
+    <string name="ready_btn_txt">Ready</string>
+    <string name="cancel_btn_txt">Cancel</string>
 
 </resources>
