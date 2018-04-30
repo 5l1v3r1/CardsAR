@@ -1,15 +1,10 @@
 package com.wear.cardsar;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static android.os.SystemClock.sleep;
 
 /**
  * Created by larsoe4 on 4/18/2018.
@@ -45,54 +40,11 @@ public class PlayingCardMappings {
     public PlayingCardMappings(Game game, AppRepository repository){
         List<CardMapping> mappings = loadMappings(game, repository);
 
-        countCards(mappings);
+        assignPlayingCards(mappings);
+    }
 
-        // estimate number of decks needed
-        nDecks = (nPlayingCards / 52) + 1;
-
-        // attempt to assign playing cards
-        // loop until no out-of-bounds exceptions,
-        // incrementing the number of decks each time
-        boolean exception;
-        do {
-            exception = false;
-            try {
-                int currentPCard = 0;
-                for (CardMapping mapping : mappings) {
-                    int cardsToAlloc = mapping.getQuantity();
-                    while (cardsToAlloc > 0) {
-                        mPlayingCards[currentPCard] = mapping;
-                        currentPCard++;
-
-                        // There are <nDeck> copies of each playing card
-                        // Assigning a playing card to a custom card really assigns
-                        // <nDeck> playing cards to a custom card
-                        cardsToAlloc -= nDecks;
-                    }
-
-                    // Each unique card is mapped to a playing card
-                    // If there are multiple decks, the custom card might not have
-                    // a quantity high enough to use all of the playing cards it was
-                    // assigned across all decks
-                    // Some of these cards are unused
-                    if (cardsToAlloc < 0) {
-                        mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
-                    }
-                }
-
-                // Remove totally unused cards
-                for (int i = 0; i < 52; i++) {
-                    if (mPlayingCards[i] == null) {
-                        mUnusedPlayingCards[i] = nDecks;
-                    }
-                }
-
-            }catch(IndexOutOfBoundsException e){
-                nDecks++;
-                exception = true;
-            }
-
-        }while(exception);
+    public PlayingCardMappings(List<CardMapping> mappings){
+        assignPlayingCards(mappings);
     }
 
     public int getnPlayingCards(){
@@ -172,9 +124,58 @@ public class PlayingCardMappings {
 
 
     private static List<CardMapping> loadMappings(Game game, AppRepository repository){
-
-
         return repository.findStaticMappingsByName(game.getGameName());
+    }
+
+    private void assignPlayingCards(List<CardMapping> mappings){
+        countCards(mappings);
+
+        // estimate number of decks needed
+        nDecks = (nPlayingCards / 52) + 1;
+
+        // attempt to assign playing cards
+        // loop until no out-of-bounds exceptions,
+        // incrementing the number of decks each time
+        boolean exception;
+        do {
+            exception = false;
+            try {
+                int currentPCard = 0;
+                for (CardMapping mapping : mappings) {
+                    int cardsToAlloc = mapping.getQuantity();
+                    while (cardsToAlloc > 0) {
+                        mPlayingCards[currentPCard] = mapping;
+                        currentPCard++;
+
+                        // There are <nDeck> copies of each playing card
+                        // Assigning a playing card to a custom card really assigns
+                        // <nDeck> playing cards to a custom card
+                        cardsToAlloc -= nDecks;
+                    }
+
+                    // Each unique card is mapped to a playing card
+                    // If there are multiple decks, the custom card might not have
+                    // a quantity high enough to use all of the playing cards it was
+                    // assigned across all decks
+                    // Some of these cards are unused
+                    if (cardsToAlloc < 0) {
+                        mUnusedPlayingCards[currentPCard - 1] = cardsToAlloc * -1;
+                    }
+                }
+
+                // Remove totally unused cards
+                for (int i = 0; i < 52; i++) {
+                    if (mPlayingCards[i] == null) {
+                        mUnusedPlayingCards[i] = nDecks;
+                    }
+                }
+
+            }catch(IndexOutOfBoundsException e){
+                nDecks++;
+                exception = true;
+            }
+
+        }while(exception);
     }
 
     private void countCards(List<CardMapping> cardMappings){
